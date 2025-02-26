@@ -48,8 +48,14 @@ create table administrador(
     
 );
 
+create table serviço(
+	nome varchar(200),
+    preço(),
+    horario_disponivel()
+    
+);
 
-
+select*from hospede;
 
 
 
