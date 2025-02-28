@@ -1,13 +1,9 @@
 <?php
 include "conex.php";
-
-
-date_default_timezone_set('America/Sao_Paulo');
 $msg = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Sanitizar entrada de dados
-    $RG = $conn->real_escape_string($_POST['RG']);
     $CPF = $conn->real_escape_string($_POST['CPF']);
     $telefone = $conn->real_escape_string($_POST['telefone']);
     $endereco = $conn->real_escape_string($_POST['endereco']); // Corrigido
@@ -16,14 +12,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $login = $conn->real_escape_string($_POST['login']);
     $password = $_POST['password'];
     $confirmar_senha = $_POST['confirmar_senha'];
-    $dataHoraAtual = date('Y-m-d H:i:s');
 
     // Verificar se as senhas coincidem
     if ($password !== $confirmar_senha) {
         $msg = "As senhas não coincidem!";
     } else {
         // Verificar se o usuário já existe (RG, CPF ou login duplicado)
-        $sql_check = "SELECT * FROM hospede WHERE login = '$login' OR RG = '$RG' OR CPF = '$CPF'";
+        $sql_check = "SELECT * FROM gerente WHERE login = '$login' OR CPF = '$CPF'";
         $result_check = $conn->query($sql_check);
 
         if ($result_check->num_rows > 0) {
@@ -33,8 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
             // Inserir novo usuário no banco de dados (corrigida a query)
-            $sql = "INSERT INTO hospede (horario, nome, telefone, endereco, email, RG, CPF, login, senha) 
-                    VALUES ('$dataHoraAtual', '$nome', '$telefone', '$endereco', '$email', '$RG', '$CPF', '$login', '$hashed_password')";
+            $sql = "INSERT INTO gerente (nome, telefone, endereco, email, CPF, login, senha) 
+                    VALUES ( '$nome', '$telefone', '$endereco', '$email', '$CPF', '$login', '$hashed_password')";
 
             if ($conn->query($sql) === TRUE) {
                 $msg = "Registro bem sucedido";
@@ -47,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $conn->close();
 ?>
+
 
 
 <!DOCTYPE html>
@@ -141,6 +137,7 @@ $conn->close();
           background-color: #99a285; /* Cor ao passar o mouse */
         
         }
+
         .toggle-password {
             position: absolute;
             right: -30px;
@@ -185,6 +182,7 @@ $conn->close();
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+
         
     </style>
 </head>
@@ -192,34 +190,30 @@ $conn->close();
     <header class="header">
         <img src="../img/logo_hoteel.png" alt="Caminho das Pedras - Rustic Hotel">
         <nav class="nav">
-            
+            <a href="#">SAIR</a>
         </nav>
     </header>
-    
-    <form action="register_hospede.php" method="POST">
-        <div class="form-container">
-            
+    <div class="form-container">
+
+        <form action="register_gerente.php" method="POST">
             <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" required>
+            <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required> 
+
+            <label for="Endereço">Endereço:</label>
+            <input type="text" id="endereco" name="endereco" placeholder="Digite seu Endereço" required>
 
             <label for="email">E-mail:</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="RG">RG:</label>
-            <input type="text" id="RG" name="RG" required>
-            
+            <input type="email" id="email" name="email" placeholder="Digite seu E-mail" required>
+        
             <label for="CPF">CPF:</label>
-            <input type="text" id="CPF" name="CPF" required>
-            
+            <input type="text" id="CPF" name="CPF" placeholder="Digite seu CPF" required>
+        
             <label for="telefone">Telefone:</label>
-            <input type="tel" id="telefone" name="telefone" required>
-
-            <label for="endereco">Endereço:</label>
-            <input type="text" id="endereco" name="endereco" required>
+            <input type="tel" id="telefone" name="telefone" placeholder="Digite seu Telefone" required>
 
             <label for="login">Login:</label>
-            <input type="text" id="login" name="login" required>
-            
+            <input type="text" id="login" name="login" placeholder="Digite seu Login" required>
+        
             <label for="senha">Senha:</label>
             <div class="password-container">
                 <input type="password" id="password" name="password" placeholder="Informe a Senha" required>
@@ -231,14 +225,21 @@ $conn->close();
                 <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Confirme a Senha" required>
                 <button type="button" class="toggle-password" onclick="ver_senha2('password')">👁️</button>
             </div>
-        </div>
 
-        <button class="btn-enviar" type="submit">Enviar</button>
-    </form>
+            <button class="btn-enviar" type="submit">Enviar</button>
+
+        </form>
+        
+
+
+        
+    </div>
+
 
     <div class="mensagem <?php echo strpos($msg, 'sucesso') !== false ? 'sucesso' : 'erro'; ?>">
     <?php echo $msg; ?>
     </div>
+
 
 
     <script>
@@ -260,5 +261,6 @@ $conn->close();
             }
         }
     </script>
+    
 </body>
 </html>
