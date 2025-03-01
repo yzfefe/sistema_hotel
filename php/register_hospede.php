@@ -22,22 +22,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($password !== $confirmar_senha) {
         $msg = "As senhas não coincidem!";
     } else {
-        // Verificar se o usuário já existe (RG, CPF ou login duplicado)
-        $sql_check = "SELECT * FROM hospede WHERE login = '$login' OR RG = '$RG' OR CPF = '$CPF'";
-        $result_check = $conn->query($sql_check);
+        // Verificar se o usuário já existe (CPF ou login duplicado) em qualquer tabela
+        $tables = ['gerente', 'recepcionista', 'hospede'];
+        $user_exists = false;
 
-        if ($result_check->num_rows > 0) {
+        foreach ($tables as $table) {
+            $sql_check = "SELECT login FROM $table WHERE login = ? OR CPF = ?";
+            $stmt = $conn->prepare($sql_check);
+            $stmt->bind_param("ss", $login, $CPF);
+            $stmt->execute();
+            $result_check = $stmt->get_result();
+
+            if ($result_check->num_rows > 0) {
+                $user_exists = true;
+                break;
+            }
+        }
+
+        if ($user_exists) {
             $msg = "Usuário já existe!";
         } else {
             // Criptografar a senha
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            // Inserir novo usuário no banco de dados (corrigida a query)
-            $sql = "INSERT INTO hospede (horario, nome, telefone, endereco, email, RG, CPF, login, senha) 
-                    VALUES ('$dataHoraAtual', '$nome', '$telefone', '$endereco', '$email', '$RG', '$CPF', '$login', '$hashed_password')";
+            // Escolha a tabela correta para inserir (Altere conforme necessário)
+            $table = "hospede"; // <- MODIFIQUE PARA O TIPO DE USUÁRIO CORRETO
 
-            if ($conn->query($sql) === TRUE) {
-                $msg = "Registro bem sucedido";
+            // Inserir novo usuário no banco de dados
+            $sql = "INSERT INTO $table (nome, telefone, endereco, email, CPF, RG, horario, login, senha) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("sssssssss", $nome, $telefone, $endereco, $email, $CPF, $RG, $dataHoraAtual, $login, $hashed_password);
+
+            if ($stmt->execute()) {
+                $msg = "Registro bem sucedido!";
             } else {
                 $msg = "Erro ao registrar: " . $conn->error;
             }

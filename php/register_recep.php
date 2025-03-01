@@ -4,12 +4,12 @@ $msg = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Sanitizar entrada de dados
-    $RG = $conn->real_escape_string($_POST['RG']);
     $CPF = $conn->real_escape_string($_POST['CPF']);
     $telefone = $conn->real_escape_string($_POST['telefone']);
-    $endereco = $conn->real_escape_string($_POST['endereco']); // Corrigido
-    $email = $conn->real_escape_string($_POST['email']);
     $horario_de_trabalho = $conn->real_escape_string($_POST['horario_de_trabalho']);
+    $RG = $conn->real_escape_string($_POST['RG']);
+    $endereco = $conn->real_escape_string($_POST['endereco']);
+    $email = $conn->real_escape_string($_POST['email']);
     $nome = $conn->real_escape_string($_POST['nome']);
     $login = $conn->real_escape_string($_POST['login']);
     $password = $_POST['password'];
@@ -19,22 +19,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($password !== $confirmar_senha) {
         $msg = "As senhas não coincidem!";
     } else {
-        // Verificar se o usuário já existe (RG, CPF ou login duplicado)
-        $sql_check = "SELECT * FROM recepcionista WHERE login = '$login' OR RG = '$RG' OR CPF = '$CPF'";
-        $result_check = $conn->query($sql_check);
+        // Verificar se o usuário já existe (CPF ou login duplicado) em qualquer tabela
+        $tables = ['gerente', 'recepcionista', 'hospede'];
+        $user_exists = false;
 
-        if ($result_check->num_rows > 0) {
+        foreach ($tables as $table) {
+            $sql_check = "SELECT login FROM $table WHERE login = ? OR CPF = ?";
+            $stmt = $conn->prepare($sql_check);
+            $stmt->bind_param("ss", $login, $CPF);
+            $stmt->execute();
+            $result_check = $stmt->get_result();
+
+            if ($result_check->num_rows > 0) {
+                $user_exists = true;
+                break;
+            }
+        }
+
+        if ($user_exists) {
             $msg = "Usuário já existe!";
         } else {
             // Criptografar a senha
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            // Inserir novo usuário no banco de dados (corrigida a query)
-            $sql = "INSERT INTO recepcionista (nome, telefone, endereco, email, rg, horario, cpf, login, senha) 
-                    VALUES ( '$nome', '$telefone', '$endereco', '$email', '$RG', '$horario_de_trabalho', '$CPF', '$login', '$hashed_password')";
+            // Escolha a tabela correta para inserir (Altere conforme necessário)
+            $table = "recepcionista"; // <- MODIFIQUE PARA O TIPO DE USUÁRIO CORRETO
 
-            if ($conn->query($sql) === TRUE) {
-                $msg = "Registro bem sucedido";
+            // Inserir novo usuário no banco de dados
+            $sql = "INSERT INTO $table (nome, telefone, endereco, email, CPF, RG, horario, login, senha) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("sssssssss", $nome, $telefone, $endereco, $email, $CPF, $RG, $horario_de_trabalho, $login, $hashed_password);
+
+            if ($stmt->execute()) {
+                $msg = "Registro bem sucedido!";
             } else {
                 $msg = "Erro ao registrar: " . $conn->error;
             }
@@ -44,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $conn->close();
 ?>
+
 
 
 <!DOCTYPE html>
@@ -190,7 +210,7 @@ $conn->close();
     <header class="header">
         <img src="../img/logo_hoteel.png" alt="Caminho das Pedras - Rustic Hotel">
         <nav class="nav">
-            <a href="#">SAIR</a>
+            <a href="tela_gerente.php">SAIR</a>
         </nav>
     </header>
     <div class="form-container">
@@ -205,7 +225,7 @@ $conn->close();
             <label for="Endereço">Endereço:</label>
             <input type="text" id="endereco" name="endereco" placeholder="Digite seu Endereço" required>
 
-            <label for="rg">Horário de trabalho:</label>:</label>
+            <label for="horario_de_trabalho">Horário de trabalho:</label>:</label>
             <input type="time" id="horario_de_trabalho" name="horario_de_trabalho" required>
 
             <label for="email">E-mail:</label>

@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Sanitizar entrada de dados
     $CPF = $conn->real_escape_string($_POST['CPF']);
     $telefone = $conn->real_escape_string($_POST['telefone']);
-    $endereco = $conn->real_escape_string($_POST['endereco']); // Corrigido
+    $endereco = $conn->real_escape_string($_POST['endereco']);
     $email = $conn->real_escape_string($_POST['email']);
     $nome = $conn->real_escape_string($_POST['nome']);
     $login = $conn->real_escape_string($_POST['login']);
@@ -17,22 +17,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($password !== $confirmar_senha) {
         $msg = "As senhas não coincidem!";
     } else {
-        // Verificar se o usuário já existe (RG, CPF ou login duplicado)
-        $sql_check = "SELECT * FROM gerente WHERE login = '$login' OR CPF = '$CPF'";
-        $result_check = $conn->query($sql_check);
+        // Verificar se o usuário já existe (CPF ou login duplicado) em qualquer tabela
+        $tables = ['gerente', 'recepcionista', 'hospede'];
+        $user_exists = false;
 
-        if ($result_check->num_rows > 0) {
+        foreach ($tables as $table) {
+            $sql_check = "SELECT login FROM $table WHERE login = ? OR CPF = ?";
+            $stmt = $conn->prepare($sql_check);
+            $stmt->bind_param("ss", $login, $CPF);
+            $stmt->execute();
+            $result_check = $stmt->get_result();
+
+            if ($result_check->num_rows > 0) {
+                $user_exists = true;
+                break;
+            }
+        }
+
+        if ($user_exists) {
             $msg = "Usuário já existe!";
         } else {
             // Criptografar a senha
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            // Inserir novo usuário no banco de dados (corrigida a query)
-            $sql = "INSERT INTO gerente (nome, telefone, endereco, email, CPF, login, senha) 
-                    VALUES ( '$nome', '$telefone', '$endereco', '$email', '$CPF', '$login', '$hashed_password')";
+            // Escolha a tabela correta para inserir (Altere conforme necessário)
+            $table = "gerente"; // <- MODIFIQUE PARA O TIPO DE USUÁRIO CORRETO
 
-            if ($conn->query($sql) === TRUE) {
-                $msg = "Registro bem sucedido";
+            // Inserir novo usuário no banco de dados
+            $sql = "INSERT INTO $table (nome, telefone, endereco, email, CPF, login, senha) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("sssssss", $nome, $telefone, $endereco, $email, $CPF, $login, $hashed_password);
+
+            if ($stmt->execute()) {
+                $msg = "Registro bem sucedido!";
             } else {
                 $msg = "Erro ao registrar: " . $conn->error;
             }
@@ -42,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $conn->close();
 ?>
+
 
 
 
