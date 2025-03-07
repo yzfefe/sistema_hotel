@@ -55,6 +55,56 @@ create table serviço(
     
 );
 
+CREATE TABLE quartos (
+    id_quarto INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    tipo VARCHAR(50) NOT NULL,
+    preco_diaria DECIMAL(10,2) NOT NULL
+);
+
+CREATE TABLE reservas (
+    id_reserva INT PRIMARY KEY AUTO_INCREMENT,
+    id_hos INT,
+    id_quarto INT,
+    data_inicio DATE NOT NULL,
+    data_fim DATE NOT NULL
+);
+
+CREATE TABLE promocoes (
+    id_promocao INT PRIMARY KEY AUTO_INCREMENT,
+    tipo ENUM('Quarto', 'Serviço') NOT NULL, /*podem conter dois valores*/
+    id_item INT NOT NULL,
+    preco_promocional DECIMAL(10,2) NOT NULL
+);
+
+CREATE TABLE relatorios (
+    id_relatorio INT PRIMARY KEY AUTO_INCREMENT,
+    tipo VARCHAR(100) NOT NULL,
+    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE consumo (
+    id_consumo INT PRIMARY KEY AUTO_INCREMENT,
+    id_hos INT,
+    id_servico INT,
+    data DATE NOT NULL,
+    valor DECIMAL(10,2) NOT NULL
+);
+
+CREATE TABLE saloes (
+    id_salao INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    capacidade INT NOT NULL,
+    preco DECIMAL(10,2) NOT NULL,
+    disponibilidade ENUM('Disponível', 'Indisponível') NOT NULL /*podem conter dois valores*/
+);
+
+CREATE TABLE decoracoes (
+    id_decoracao INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    descricao VARCHAR(255),
+    preco DECIMAL(10,2) NOT NULL
+);
 select*from hospede;
 
 
