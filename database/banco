@@ -68,6 +68,7 @@ CREATE TABLE quartos (
     tipo VARCHAR(50) NOT NULL,
     preco_diaria DECIMAL(10,2) NOT NULL
 );
+select * from quartos;
 
 CREATE TABLE reservas (
     id_reserva INT PRIMARY KEY AUTO_INCREMENT,
@@ -80,9 +81,11 @@ CREATE TABLE reservas (
 CREATE TABLE promocoes (
     id_promocao INT PRIMARY KEY AUTO_INCREMENT,
     tipo ENUM('Quarto', 'Serviço') NOT NULL, /*podem conter dois valores*/
+    nome varchar(100),
     id_item INT NOT NULL,
     preco_promocional DECIMAL(10,2) NOT NULL
 );
+select * from promocoes;
 
 CREATE TABLE relatorios (
     id_relatorio INT PRIMARY KEY AUTO_INCREMENT,
@@ -112,9 +115,6 @@ CREATE TABLE decoracoes (
     descricao VARCHAR(255),
     preco DECIMAL(10,2) NOT NULL
 );
-select*from hospede;
-
-
 
 
 
