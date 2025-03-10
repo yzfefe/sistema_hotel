@@ -19,15 +19,15 @@
             align-items: center;
         }
         .header {
-        background: rgb(125,58,38);
-        background: linear-gradient(180deg, rgba(125,58,38,1) 6%, rgba(133,78,57,1) 23%, rgba(196,154,108,1) 63%, rgba(242,205,164,1) 84%, rgba(255,255,255,1) 100%);
-        width: 100%;
-        padding: 5px 100px;
-        display: flex;
-        align-items: flex-start;
-        justify-content: center; /* Centraliza horizontalmente */
-        position: relative;
-        height: 180px;
+            background: rgb(125,58,38);
+            background: linear-gradient(180deg, rgba(125,58,38,1) 6%, rgba(133,78,57,1) 23%, rgba(196,154,108,1) 63%, rgba(242,205,164,1) 84%, rgba(255,255,255,1) 100%);
+            width: 100%;
+            padding: 5px 100px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center; /* Centraliza horizontalmente */
+            position: relative;
+            height: 180px;
         }
         .header img {
             height: 200px; /* Ajuste o tamanho conforme necessário */
@@ -51,6 +51,8 @@
             text-decoration: underline;
         }
         .form-container {
+            gap: 1rem;
+            display: block;
             background-color: #2c3330;
             padding: 50px;
             border-radius: 15px;
@@ -66,7 +68,21 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-
+        .grid{
+            display: grid;
+            grid-template-columns: 50% 50%;
+            grid-template-rows: 100%;
+            gap: 1rem;
+        }
+        /* .colun{ */
+            /* display: flex; */
+            /* flex-direction: column; */
+        /* } */
+        
+        .confirm{
+            width: 100%;
+            
+        }
         label{
             color: white;
             font-weight: bold;
@@ -103,33 +119,46 @@
     </header>
     <div class="form-container">
 
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" placeholder="Digite seu nome">
+        <div class="grid">
 
-        <label for="rg">RG:</label>
-        <input type="text" id="rg" name="rg" placeholder="Digite seu RG">
+            <div class="colun">
 
-        <label for="Endereço">Endereço:</label>
-        <input type="text" id="Endereço" name="Endereço" placeholder="Digite seu Endereço">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" placeholder="Digite seu nome">
 
-        <label for="login">Login:</label>
-        <input type="text" id="login" name="login" placeholder="Digite seu Login">
+                <label for="rg">RG:</label>
+                <input type="text" id="rg" name="rg" placeholder="Digite seu RG">
 
-        <label for="email">E-mail:</label>
-        <input type="email" id="email" name="email" placeholder="Digite seu E-mail">
-        
-        <label for="cpf">CPF:</label>
-        <input type="text" id="cpf" name="cpf" placeholder="Digite seu CPF">
-        
-        <label for="telefone">Telefone:</label>
-        <input type="tel" id="telefone" name="telefone" placeholder="Digite seu Telefone">
-        
-        <label for="senha">Senha:</label>
-        <input type="password" id="senha" name="senha" placeholder="Informe a Senha">
+                <label for="Endereço">Endereço:</label>
+                <input type="text" id="Endereço" name="Endereço" placeholder="Digite seu Endereço">
 
-        <label for="senha">Confirme a senha:</label>
-        <input type="password" id="Confirme a senha" name="Confirme a senha" placeholder="Confirme a Senha">
+                <label for="login">Login:</label>
+                <input type="text" id="login" name="login" placeholder="Digite seu Login">
 
+            </div>
+
+            <div class="colun">
+
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" placeholder="Digite seu E-mail">
+
+                <label for="cpf">CPF:</label>
+                <input type="text" id="cpf" name="cpf" placeholder="Digite seu CPF">
+
+                <label for="telefone">Telefone:</label>
+                <input type="tel" id="telefone" name="telefone" placeholder="Digite seu Telefone">
+
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" placeholder="Informe a Senha">
+
+            </div>
+
+        </div>
+
+        <div class="confirm">
+            <label for="senha">Confirme a senha:</label>
+            <input type="password" id="Confirme a senha" name="Confirme a senha" placeholder="Confirme a Senha">
+        </div>
         
     </div>
 
