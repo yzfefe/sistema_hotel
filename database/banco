@@ -78,14 +78,14 @@ CREATE TABLE reservas (
     data_fim DATE NOT NULL
 );
 
-CREATE TABLE promocoes (
+CREATE TABLE promocoes_servicos (
     id_promocao INT PRIMARY KEY AUTO_INCREMENT,
-    tipo ENUM('Quarto', 'Serviço') NOT NULL, /*podem conter dois valores*/
+    tipo_serv VARCHAR(100),
     nome varchar(100),
     id_item INT NOT NULL,
     preco_promocional DECIMAL(10,2) NOT NULL
 );
-select * from promocoes;
+select * from promocoes_servicos;
 
 CREATE TABLE relatorios (
     id_relatorio INT PRIMARY KEY AUTO_INCREMENT,
@@ -115,6 +115,5 @@ CREATE TABLE decoracoes (
     descricao VARCHAR(255),
     preco DECIMAL(10,2) NOT NULL
 );
-
 
 
