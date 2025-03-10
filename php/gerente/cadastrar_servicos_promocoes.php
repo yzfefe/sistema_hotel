@@ -26,11 +26,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['update'])) {
         $id_item = $_POST['id_item']; // ID da promoção
         $nome = $_POST['nome'];
-        $tipo = $_POST['tipo'];
-        $horario = $_POST['horario'];
+        $tipo_serv = $_POST['tipo'];
         $preco_promocional = (float)$_POST['preco_promocional']; // Garantir que seja float
 
-        $sql = "SELECT id_serv FROM servicos WHERE id_serv = ? ";
+        $sql1 = $conn->prepare("INSERT INTO promocoes_servicos (tipo_serv, nome, id_item, preco_promocional) VALUES (?, ?, ?, ?)");
+        $sql1->bind_param("ssii", $tipo_serv, $nome, $id_item, $preco_promocional);
+
+        if ($sql1->execute()) {
+            echo "Registro inserido com sucesso!";
+        } else {
+            echo "Erro ao inserir registro: " . $sql1->error;
+        }
+        
         
     }
 }
