@@ -7,6 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $search = $_POST['search'];
         $sql = "SELECT * FROM servicos WHERE nome = ? OR id_serv LIKE ?";
         $stmt = $conn->prepare($sql);
+
         
         // Adicionando os parâmetros ao prepared statement
         $search_like = "%$search%";
@@ -19,12 +20,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Erro ao executar a busca: " . $stmt->error;
         }
     }
+    
 
     // Se a atualização foi acionada
     if (isset($_POST['update'])) {
         $id_item = $_POST['id_item']; // ID da promoção
         $nome = $_POST['nome'];
         $tipo = $_POST['tipo'];
+        $horario = $_POST['horario'];
         $preco_promocional = (float)$_POST['preco_promocional']; // Garantir que seja float
 
         $sql = "SELECT id_serv FROM servicos WHERE id_serv = ? ";
@@ -49,10 +52,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- Exibindo resultados da busca -->
         <?php while ($row = $result->fetch_assoc()): ?>
             <form method="post">
-                <input type="text" name="id_item" value="<?php echo $row['id_item']; ?>" readonly>
-                <input type="text" name="nome" value="<?php echo $row['nome']; ?>">
-                <input type="text" name="tipo" value="<?php echo $row['tipo']; ?>">
-                <input type="text" name="preco_promocional" value="<?php echo $row['preco_promocional']; ?>">
+                <input type="text" name="id_item" value="<?php echo $row['id_serv']; ?>"><br>
+                <input type="text" name="nome" value="<?php echo $row['nome']; ?>"> <br>
+                <input type="text" name="tipo" value="<?php echo $row['tipo']; ?>"><br>
+                <input type="text" name="horario" value="<?php echo $row['horario']; ?>"> <br>
+                <input type="number" name="preco_promocional" value="<?php echo $row['preco']; ?>"> <br>
                 <button type="submit" name="update">Atualizar</button>
             </form>
         <?php endwhile; ?>
