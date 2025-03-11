@@ -19,11 +19,10 @@
             align-items: center;
         }
         .header {
-        background: linear-gradient(180deg, rgb(107, 57, 42, 0.946) 6%, rgba(133,78,57,1)18%, rgb(203, 164, 122) 60%, rgba(217,192, 164, 0.339) 90%, rgba(255,255,255,1)110%);
+        background: linear-gradient(180deg, rgba(107, 57, 42, 0.946) 6%, rgba(133,78,57,1) 18%, rgb(203, 164, 122) 60%, rgba(217, 192, 164, 0.339) 90%, rgba(255,255,255,1) 110%);
         width: 100%;
         padding: 5px 100px;
         display: flex;
-        align-items: flex-start;
         justify-content: center; /* Centraliza horizontalmente */
         position: relative;
         height: 180px;
@@ -33,24 +32,7 @@
             display: block;
             margin-top: -15px;
         }
-        .nav {
-            margin-right: 0px;
-            position: absolute;
-            bottom: 5px;
-            right: 40px;
-        }
-        .nav a {
-            color: white;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 18px;
-            margin: 0 15px;
-        }
-        .nav a:hover {
-            text-decoration: underline;
-            color: #7d3a26;
-            transition: 0.4 ease;
-        }
+        
         .form-container {
             background-color: #505b40;
             display: flex;
@@ -104,9 +86,8 @@
 <body>
     <header class="header">
         <img src="../img/logo_hoteel.png" alt="Caminho das Pedras - Rustic Hotel">
-        <nav class="nav">
-            <a href="#">SAIR</a>
-        </nav>
+
+
     </header>
     <div class="form-container">
 
@@ -132,7 +113,7 @@
         <input type="text" id="email" name="email" placeholder="Digite seu E-mail">
         
         <label for="cpf">CPF:</label>
-        <input type="number" id="cpf" name="cpf" placeholder="Digite seu CPF">
+        <input type="number" id="cpf" name="cpf" placeholder="Digite seu CPF" onkeypress="cpf()">
         
         <label for="telefone">Telefone:</label>
         <input type="number" id="telefone" name="telefone" placeholder="Digite seu Telefone">
@@ -155,6 +136,10 @@
     <script>
     function confirmarCadastro() {
         alert("Cadastro realizado com sucesso!");
+    }
+
+    function cpf() {
+        let cpf = document.querySelector("#cpf")
     }
 </script>
 </html>
