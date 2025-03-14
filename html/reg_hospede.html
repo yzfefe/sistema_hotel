@@ -37,7 +37,8 @@
             align-items: center;
             gap: 1rem;
             display: block;
-            background-color: #505b40;
+            border: 3.5px solid black;
+            background-color: white;
             padding: 35px;
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -58,18 +59,22 @@
             grid-template-rows: 100%;
             gap: 1rem;
         }
-        /* .colun{ */
-            /* display: flex; */
-            /* flex-direction: column; */
-        /* } */
+        .colun{
+            display: flex;
+            flex-direction: column;
+            text-align: start;
+        }
+        .colun label{
+            margin-left: .5rem;       
+        }
         
         .confirm{
             width: 100%;
             
+            
         }
         label{
-            color: white;
-            font-weight: bold;
+            color: black;
         }
         .btn-enviar{
             display: flex;
