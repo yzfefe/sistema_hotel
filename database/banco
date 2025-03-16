@@ -87,6 +87,15 @@ CREATE TABLE promocoes_servicos (
 );
 select * from promocoes_servicos;
 
+CREATE TABLE promocoes_quartos (
+    id_quarto_promo INT PRIMARY KEY AUTO_INCREMENT,
+    tipo VARCHAR(100),
+    nome varchar(100),
+    id_item INT NOT NULL,
+    preco_diaria_promo DECIMAL(10,2) NOT NULL
+);
+select * from promocoes_quartos;
+
 CREATE TABLE relatorios (
     id_relatorio INT PRIMARY KEY AUTO_INCREMENT,
     tipo VARCHAR(100) NOT NULL,
@@ -115,5 +124,4 @@ CREATE TABLE decoracoes (
     descricao VARCHAR(255),
     preco DECIMAL(10,2) NOT NULL
 );
-
 
