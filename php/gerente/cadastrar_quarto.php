@@ -7,9 +7,9 @@
     // Verifica se foi enviado via método POST
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // recebe os dados do formulário e armazenando
-        $nome = trim($_POST['nome']); 
-        $preco = trim($_POST['preco']); 
-        $tipo = trim($_POST['tipo']); 
+        $nome = trim($_POST['nome']);
+        $preco = trim($_POST['preco']);
+        $tipo = trim($_POST['tipo']);
         // Validação
         if (empty($nome) || empty($preco) || empty($tipo)) {
             echo "Todos os campos são obrigatórios.";
@@ -37,7 +37,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Serviços - Caminho das Pedras</title>
+    <title>Cadastrar Quartos - Caminho das Pedras</title>
     <style>
        
        * {

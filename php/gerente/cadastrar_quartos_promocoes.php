@@ -23,14 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
 
     // Se a atualização foi acionada
-    if (isset($_POST['update'])) {
-        $id_quarto = $_POST['id_quarto']; // ID da promoção
+    if (isset($_POST['update'])) { // ID da promoção
         $nome = $_POST['nome'];
         $tipo = $_POST['tipo'];
         $preco_diaria_promo = (float)$_POST['preco_diaria_promo']; // Garantir que seja float
 
-        $sql1 = $conn->prepare("INSERT INTO promocoes_quartos (tipo, nome, id_quarto, preco_diaria_promo) VALUES (?, ?, ?, ?)");
-        $sql1->bind_param("ssii", $tipo, $nome, $id_quarto, $preco_diaria_promo);
+        $sql1 = $conn->prepare("INSERT INTO promocoes_quartos (tipo, nome, preco_diaria_promo) VALUES (?, ?, ?)");
+        $sql1->bind_param("ssi", $tipo, $nome, $preco_diaria_promo);
 
         if ($sql1->execute()) {
             echo "Registro inserido com sucesso!";
@@ -46,10 +45,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Gerenciar Promocoes e Servicos</title>
+    <title>Gerenciar Promoções de quartos</title>
 </head>
 <body>
-    <h2>Buscar Promoção</h2>
+    <h2>Buscar Quarto</h2>
     <form method="post">
         <input type="text" name="search" placeholder="Digite o ID ou Nome">
         <button type="submit">Buscar</button>
@@ -59,7 +58,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- Exibindo resultados da busca -->
         <?php while ($row = $result->fetch_assoc()): ?>
             <form method="post">
-                <input type="text" name="id_quarto" value="<?php echo $row['id_quarto']; ?>"><br>
                 <input type="text" name="nome" value="<?php echo $row['nome']; ?>"> <br>
                 <input type="text" name="tipo" value="<?php echo $row['tipo']; ?>"><br>
                 <input type="number" name="preco_diaria_promo" value="<?php echo $row['preco_diaria']; ?>"> <br>
