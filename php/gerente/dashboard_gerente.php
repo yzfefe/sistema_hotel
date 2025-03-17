@@ -1,29 +1,28 @@
 <?php 
-    include "conex.php";
-    
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $nome = $conn->real_escape_string($_POST['nome']);
-        $preco = $conn->real_escape_string($_POST['preco']);
-        $horario_disponivel = $conn->real_escape_string($_POST['horario_disponivel']);
-    
-    
-    $sql_check = "SELECT * FROM serviços WHERE nome = '$nome' ";
-    $result_check = $conn->query($sql_check);
+    include "../conex.php";
 
-    if ($result_check->num_rows > 0) {
-        $msg = "Usuário já existe!";
-    
 
-        // Inserir novo usuário no banco de dados (corrigida a query)
-        $sql = "INSERT INTO serviços (nome, preço, horario_disponivel) 
-                VALUES ('$nome', '$preco', '$horario_disponivel' )";
-        if ($conn->query($sql) === TRUE) {
-            $msg = "Registro bem sucedido";
-        } else {
-            $msg = "Erro ao registrar: " . $conn->error;
-        }
-    }
-}
-
-$conn->close();
 ?>
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela Inicial</title>
+</head>
+<body>
+    <h1>Tela Inicial Gerente - Caminho das Pedras</h1>
+    <a href="cadastrar_quarto.php"><button>Cadastrar Quarto</button></a>
+    <a href="cadastrar_serviços.php"><button>Cadastrar Serviço</button></a>
+    <a href="register_recep.php"><button>Cadastrar Recepcionista</button></a>
+    <a href="cadastrar_quartos_promo.php"><button>Cadastrar Quartos em Promoções</button></a>
+    <a href="cadastrar_servicos_promocoes.php"><button>Cadastrar Serviços em Promoções</button></a>
+    <a href="consultar_recepcionista.php"><button>Consultar Dados das Recepcionistas</button></a>
+    <a href="excluir_alterar_hospede.php"><button>Excluir ou Alterar Dados de Hospedes</button></a>
+
+
+    
+</body>
+</html>
