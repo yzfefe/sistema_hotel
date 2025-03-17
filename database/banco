@@ -125,3 +125,4 @@ CREATE TABLE decoracoes (
     preco DECIMAL(10,2) NOT NULL
 );
 
+ALTER TABLE gerente ADD endereco VARCHAR(255);
