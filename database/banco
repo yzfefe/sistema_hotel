@@ -46,7 +46,7 @@ create table gerente (
     nome varchar(150),
     email varchar(200),
     cpf char (11),
-    endereço varchar(250),
+    endereco varchar(250),
     telefone char(11),
     login varchar(50),
     senha varchar (100)
@@ -74,9 +74,11 @@ CREATE TABLE reservas (
     id_reserva INT PRIMARY KEY AUTO_INCREMENT,
     id_hos INT,
     id_quarto INT,
-    data_inicio DATE NOT NULL,
-    data_fim DATE NOT NULL
+    data_reserva DATE NOT NULL,
+    FOREIGN KEY (id_hos) references hospede (id_hos),
+    FOREIGN KEY (id_quarto) references quartos (id_quarto)
 );
+select * from reservas;
 
 CREATE TABLE promocoes_servicos (
     id_promocao INT PRIMARY KEY AUTO_INCREMENT,
@@ -125,4 +127,3 @@ CREATE TABLE decoracoes (
     preco DECIMAL(10,2) NOT NULL
 );
 
-ALTER TABLE gerente ADD endereco VARCHAR(255);
