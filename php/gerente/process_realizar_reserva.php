@@ -1,0 +1,7 @@
+<?php 
+    include "../conex.php";
+
+    
+    
+
+?>
