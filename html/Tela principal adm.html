@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caminho das Pedras - Rustic Hotel</title>
+
+    <script src="../js/Tela principal adm.js" defer></script>
     <style>
         * {
             margin: 0;
@@ -68,8 +70,18 @@
     </header>
    
     
-        <button class="btn-cad">CADASTRAR GERENTE</button>
+        <button class="btn-cad" onclick="redirecionar()">CADASTRAR GERENTE</button>
             <button class="btn-relat">RELATÓRIOS</button>  
+        
+        <script>
+            function redirecionar() {
+                window.location.href = "http://127.0.0.1:5500/html/Registro%20do%20gerente.html"
+            }
+        </script>
+            
 
 </body>
+
+
+
 </html>
