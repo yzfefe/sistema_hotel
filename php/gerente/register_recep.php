@@ -37,13 +37,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             $stmt->close();
         }
-        $tables = ['administrador'];
+        $tables2 = ['administrador'];
         $user_exists2 = false;
 
         foreach ($tables2 as $table2) {
-            $sql_check = "SELECT login, cpf FROM $table2 WHERE cpf = ? OR login = ?";
+            $sql_check = "SELECT login FROM $table2 WHERE login = ?";
             $stmt = $conn->prepare($sql_check);
-            $stmt->bind_param("ss", $cpf, $login);
+            $stmt->bind_param("s", $login);
             $stmt->execute();
             $result_check = $stmt->get_result();
 
@@ -274,9 +274,7 @@ $conn->close();
         document.querySelector("#telefone").addEventListener("input", function () {
             let tel = this.value.replace(/\D/g, ""); // Remove tudo que não for número
 
-            if (tel.length > 11) tel = tel.slice(0, 11); // Limita a 11 caracteres numéricos
-
-            // Formata como (XX) XXXXX-XXXX ou (XX) XXXX-XXXX
+            if (tel.length > 11) tel = tel.slice(0, 11); 
             if (tel.length > 10) {
                 tel = tel.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
             } else if (tel.length > 6) {
