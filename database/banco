@@ -22,7 +22,7 @@ create table recepcionista (
     email varchar(200),
     cpf char (11),
     rg varchar(12),
-    endereço varchar(250),
+    endereco varchar(250),
     telefone char(11),
     horario time,
     login varchar(50),
@@ -126,4 +126,3 @@ CREATE TABLE decoracoes (
     descricao VARCHAR(255),
     preco DECIMAL(10,2) NOT NULL
 );
-
