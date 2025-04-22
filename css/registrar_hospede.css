@@ -88,3 +88,49 @@ label{
   background-color: #7d3a26; /* Cor ao passar o mouse */
 
 }
+.toggle-password {
+    position: absolute;
+    right: 140px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #555;
+}
+.toggle-password2 {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #555;
+}
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+.password-container input {
+    width: 250px;
+    padding-right: 40px; /* Espaço para o botão */
+}
+.msg {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+}
+.msg.sucesso {
+    color: green;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+.msg.erro {
+    color: red;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
