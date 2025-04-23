@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caminho das Pedras - Rustic Hotel</title>
     <link rel="stylesheet" href="../../css/registrar_hospede.css">
+    
 </head>
 <body>
     <header class="header">
@@ -16,7 +17,7 @@
         <div class="grid">
 
             <div class="colun">
-                <form action="../recepcionista/registrar_hospede.php" method="post">
+                
                     <label for="nome">Nome:</label>
                     <input type="text" id="nome" name="nome" placeholder="Digite seu nome">
 
@@ -60,8 +61,8 @@
         
     </div>
 
-    <button type="submit" class="btn-enviar">Enviar</button>
-</form>
+    <button type="submit" class="btn-enviar" onclick="confirmarCadastro()">Enviar</button>
+
     
 
 </body>
@@ -134,5 +135,10 @@
                 passwordField.type = "password";
             }
         }
+
+        function confirmarCadastro() {
+        alert("Registro realizado com sucesso!");
+    }
+
 </script>
 </html>
