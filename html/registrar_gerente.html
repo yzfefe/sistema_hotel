@@ -14,7 +14,7 @@
 
     <div class="form-container">
         <div class="colun">
-            <form action="../admin/register_gerente.php" method="post">
+            
                 <label for="nome">Nome:</label>
                 <input type="text" id="nome" name="nome" placeholder="Digite seu nome">
 
@@ -47,8 +47,8 @@
                 <button type="button" class="toggle-password" onclick="ver_senha('confirmar_senha')">👁️</button>
             </div>
 
-            <button class="btn-enviar" type="submit">Enviar</button>    
-        </form>
+            <button class="btn-enviar" type="submit" onclick="confirmarCadastro()">Enviar</button>    
+
         
         
         </div>
@@ -102,6 +102,12 @@
                 passwordField.type = "password";
             }
         }
+
+        function confirmarCadastro() {
+        alert("Registro realizado com sucesso!");
+    }
     </script>
+
+
 </body>
 </html>
