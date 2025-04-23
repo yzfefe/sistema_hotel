@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caminho das Pedras - Rustic Hotel</title>
+    <link rel="stylesheet" href="../css/realizar_reserva.css">
+    
+</head>
+<body>
+    <header class="header">
+        <img src="../img/logo_hoteel.png" alt="Caminho das Pedras - Rustic Hotel">
+        
+    </header>
+    <div class="form-container">
+
+        <label for="cliente">Cliente</label>
+        <select name="cliente" id="cliente"></select>
+        
+        <label for="quarto">Quarto</label>
+        <select name="quarto" id="quarto"></select>
+
+    </div>
+
+    <button class="btn-enviar" onclick="confirmarCadastro()">Reservar</button>
+
+    <script>
+        function confirmarCadastro() {
+            alert("Quarto reservado com sucesso!");
+        }
+        
+    
+    </script>
+
+</body>
+</html>
