@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caminho das Pedras - Rustic Hotel</title>
-    <link rel="stylesheet" type="text/css" href="../../css/registrar_gerente.css">
+    <link rel="stylesheet" type="text/css" href="../../css/admin/registrar_gerente.css">
     
 </head>
 <body>
@@ -14,7 +14,7 @@
 
     <div class="form-container">
         <div class="colun">
-            
+            <form action="../../php/admin/registrar_gerente.php" method="post">
                 <label for="nome">Nome:</label>
                 <input type="text" id="nome" name="nome" placeholder="Digite seu nome">
 
@@ -29,26 +29,26 @@
         </div>
 
         <div class="colun">
-            <label for="cpf">CPF:</label>
-            <input type="text" id="cpf" name="cpf" placeholder="Digite seu CPF" maxlength="14">
-            
-            <label for="telefone">Telefone:</label>
-            <input type="text" id="telefone" name="telefone" placeholder="Digite seu Telefone" maxlength="15">
-            
-            <label for="senha">Senha:</label>
-            <div class="password-container">
-                <input type="password" id="senha" name="senha" placeholder="Informe a Senha">
-                <button type="button" class="toggle-password" onclick="ver_senha('senha')">👁️</button>
-            </div>
+                <label for="cpf">CPF:</label>
+                <input type="text" id="cpf" name="cpf" placeholder="Digite seu CPF" maxlength="14">
+                
+                <label for="telefone">Telefone:</label>
+                <input type="text" id="telefone" name="telefone" placeholder="Digite seu Telefone" maxlength="15">
+                
+                <label for="senha">Senha:</label>
+                <div class="password-container">
+                    <input type="password" id="senha" name="senha" placeholder="Informe a Senha">
+                    <button type="button" class="toggle-password" onclick="ver_senha('senha')">👁️</button>
+                </div>
 
-            <label for="confirmar_senha">Confirme a senha:</label>
-            <div class="password-container">
-                <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Confirme a Senha">
-                <button type="button" class="toggle-password" onclick="ver_senha('confirmar_senha')">👁️</button>
-            </div>
+                <label for="confirmar_senha">Confirme a senha:</label>
+                <div class="password-container">
+                    <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Confirme a Senha">
+                    <button type="button" class="toggle-password" onclick="ver_senha('confirmar_senha')">👁️</button>
+                </div>
 
-            <button class="btn-enviar" type="submit">Enviar</button>    
-
+                <button class="btn-enviar" type="submit">Enviar</button>    
+            </form>
         
         
         </div>
