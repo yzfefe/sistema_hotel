@@ -1,6 +1,6 @@
 <?php
 include "../conex.php";
-include "../../html/registrar_gerente.html";
+include "../../html/adm/registrar_gerente.html";
 $msg = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
