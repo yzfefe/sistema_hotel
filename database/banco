@@ -7,7 +7,7 @@ create table hospede(
     email varchar(200),
     cpf char (14),
     rg varchar(12),
-    endereço varchar(250),
+    endereco varchar(250),
     telefone char(15),
     horario time,
     login varchar(50),
