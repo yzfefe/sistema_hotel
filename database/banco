@@ -61,13 +61,14 @@ create table administrador(
     
 );
 
-
 CREATE TABLE quartos (
     id_quarto INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
     tipo VARCHAR(50) NOT NULL,
-    preco_diaria DECIMAL(10,2) NOT NULL
+    preco_diaria DECIMAL(10,2) NOT NULL,
+    andar INT NOT NULL
 );
+
 select * from quartos;
 
 CREATE TABLE reservas (
