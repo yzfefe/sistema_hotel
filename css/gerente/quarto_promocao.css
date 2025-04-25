@@ -36,7 +36,7 @@ height: 180px;
     text-align: center;
     margin-top: 120px;
 }
-.form-container input {
+.form-container select {
     display: block;
     width: 250px;
     padding: 10px;
