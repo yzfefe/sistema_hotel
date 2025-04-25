@@ -21,32 +21,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Verificar se o usuário já existe (CPF ou login duplicado)
         $tables = ['gerente', 'recepcionista', 'hospede'];
         $user_exists = false;
-
-        $stmt = $conn->prepare("SELECT login FROM gerente WHERE login = ? OR CPF = ?");
-        if (!$stmt) {
-            error_log("Erro ao preparar a query de verificação: " . $conn->error);
-            die("Erro interno, tente novamente mais tarde.");
-        }
-
+    
         foreach ($tables as $table) {
+            $stmt = $conn->prepare("SELECT login, cpf FROM $table WHERE login = ? OR cpf = ?");
+            if (!$stmt) {
+                error_log("Erro ao preparar a query de verificação: " . $conn->error);
+                die("Erro interno, tente novamente mais tarde.");
+            }
+            
             $stmt->bind_param("ss", $login, $cpf);
             $stmt->execute();
             $result_check = $stmt->get_result();
-
+    
             if ($result_check->num_rows > 0) {
                 $user_exists = true;
+                $stmt->close();
                 break;
             }
+            $stmt->close();
         }
-        $stmt->close();
-
+    
         if ($user_exists) {
             $msg = "Usuário já existe!";
-            
-            
-
         } else {
-            // Definir a tabela correta (mudar conforme a lógica do sistema)
+            // Definir a tabela correta
             $table = "gerente"; // Modifique se necessário
 
             // Validar se a tabela é permitida
@@ -54,11 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 die("Erro: Tipo de usuário inválido!");
             }
 
-            // Criptografar a senha
             $hashed_password = password_hash($senha, PASSWORD_DEFAULT);
 
             // Inserir novo usuário no banco de dados
-            $sql = "INSERT INTO $table (nome, telefone, endereco, email, CPF, login, senha) 
+            $sql = "INSERT INTO $table (nome, telefone, endereco, email, cpf, login, senha) 
                     VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $conn->prepare($sql);
