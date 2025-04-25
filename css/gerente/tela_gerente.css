@@ -10,20 +10,19 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: linear-gradient(180deg, rgba(107, 57, 42, 0.946) 6%, rgba(133,78,57,1) 18%, rgb(203, 164, 122) 60%, rgba(217, 192, 164, 0.339) 90%, rgba(255,255,255,1) 110%);
+    width: 100%;
+    padding: 5px 100px;
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    position: relative;
+    
 }
-.header {
-background: linear-gradient(180deg, rgba(107, 57, 42, 0.946) 6%, rgba(133,78,57,1) 18%, rgb(203, 164, 122) 60%, rgba(217, 192, 164, 0.339) 90%, rgba(255,255,255,1) 110%);
-width: 100%;
-padding: 5px 100px;
-display: flex;
-justify-content: center; /* Centraliza horizontalmente */
-position: relative;
-height: 180px;
-}
-.header img {
-    height: 200px; /* Ajuste o tamanho conforme necessário */
+
+img {
+    height: 400px; /* Ajuste o tamanho conforme necessário */
     display: block;
-    margin-top: -15px;
+    margin-top: 160px;
 }
 
 .form-container {
@@ -48,11 +47,11 @@ label{
     color: black;
 
 }
-.btn-enviar{
+.btn-serv{
     display: flex;
     flex-direction: column;
-    margin: 20px auto;
-    padding: 10px 50px;
+    margin: -10px auto;
+    padding: 15px 70px;
     background-color: #c49a6c;
     color: white; /* Cor do texto */
     font-size: 16px;
@@ -63,7 +62,84 @@ label{
     transition: background 0.4s ease;
 }
 
-.btn-enviar:hover {
+.btn-cad{
+    display: flex;
+    flex-direction: column;
+    margin: 25px auto;
+    padding: 15px 40px;
+    background-color: #c49a6c;
+    color: white; /* Cor do texto */
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.4s ease;
+}
+
+.btn-prom{
+    display: flex;
+    flex-direction: column;
+    margin: -10px auto;
+    padding: 15px 105px;
+    background-color: #c49a6c;
+    color: white; /* Cor do texto */
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.4s ease;
+}
+
+.btn-quarto{
+    display: flex;
+    flex-direction: column;
+    margin: 25px auto;
+    padding: 15px 70px;
+    background-color: #c49a6c;
+    color: white; /* Cor do texto */
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.4s ease;
+}
+
+.btn-relat{
+    display: flex;
+    flex-direction: column;
+    margin: -10px auto;
+    padding: 15px 107px;
+    background-color: #c49a6c;
+    color: white; /* Cor do texto */
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.4s ease;
+}
+.btn-serv:hover {
   background-color: #7d3a26; /* Cor ao passar o mouse */
 
 }
+.btn-cad:hover {
+    background-color: #7d3a26; /* Cor ao passar o mouse */
+  
+  }
+
+  .btn-prom:hover {
+    background-color: #7d3a26; /* Cor ao passar o mouse */
+  
+  }
+
+  .btn-quarto:hover {
+    background-color: #7d3a26; /* Cor ao passar o mouse */
+  
+  }
+  .btn-relat:hover {
+    background-color: #7d3a26; /* Cor ao passar o mouse */
+  
+  }
