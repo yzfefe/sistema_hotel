@@ -1,6 +1,6 @@
 <?php
 include "../conex.php";
-include "../../html/registrar_recep.html";
+include "../../html/gerente/registrar_recep.html";
 $msg = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -20,14 +20,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($senha !== $confirmar_senha) {
         $msg = "As senhas não coincidem!";
     } else {
-        // Verificar se o CPF ou RG já está cadastrado
-        $tables = ['recepcionista', 'hospede'];
+        // Verificar se o usuário já existe (CPF, login ou RG duplicado)
+        $tables_to_check = [
+            'recepcionista' => "SELECT login, cpf, rg FROM recepcionista WHERE login = ? OR cpf = ? OR rg = ?",
+            'hospede' => "SELECT login, cpf, rg FROM hospede WHERE login = ? OR cpf = ? OR rg = ?",
+            'gerente' => "SELECT login, cpf FROM gerente WHERE login = ? OR cpf = ?",
+            'administrador' => "SELECT login FROM administrador WHERE login = ?"
+        ];
+        
         $user_exists = false;
 
-        foreach ($tables as $table) {
-            $sql_check = "SELECT login, cpf, rg FROM $table WHERE cpf = ? OR rg = ?";
-            $stmt = $conn->prepare($sql_check);
-            $stmt->bind_param("ss", $cpf, $rg);
+        foreach ($tables_to_check as $table => $query) {
+            $stmt = $conn->prepare($query);
+            if (!$stmt) {
+                error_log("Erro ao preparar a query de verificação: " . $conn->error);
+                die("Erro interno, tente novamente mais tarde.");
+            }
+            
+            // Bind dos parâmetros conforme a query
+            if ($table === 'recepcionista' || $table === 'hospede') {
+                $stmt->bind_param("sss", $login, $cpf, $rg);
+            }if($table === 'gerente'){
+                $stmt->bind_param("ss", $login, $cpf);
+            }if($table === 'administrador'){
+                $stmt->bind_param("s", $login);
+            }
+            
             $stmt->execute();
             $result_check = $stmt->get_result();
 
@@ -38,58 +56,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             $stmt->close();
         }
-        $tables2 = ['administrador'];
-        $user_exists2 = false;
-
-        foreach ($tables2 as $table2) {
-            $sql_check = "SELECT login FROM $table2 WHERE login = ?";
-            $stmt = $conn->prepare($sql_check);
-            $stmt->bind_param("s", $login);
-            $stmt->execute();
-            $result_check = $stmt->get_result();
-
-            if ($result_check->num_rows > 0) {
-                $user_exists2 = true;
-                $stmt->close();
-                break;
-            }
-            $stmt->close();
-        }
-
-        // Caso CPF ou RG já exista, não inserimos no banco
-        if ($user_exists || $user_exists2) {
-            $msg2 = "Usuário já existe";
+    }
+        if ($user_exists) {
+            $msg = "Usuário já existe!";
         } else {
-            // Criptografar a senha
+            // Tabela de destino
+            $target_table = "recepcionista";
+
             $hashed_password = password_hash($senha, PASSWORD_DEFAULT);
 
             // Inserir novo usuário no banco de dados
-            $table = "recepcionista"; // <- MODIFIQUE PARA O TIPO DE USUÁRIO CORRETO
-
-            $sql = "INSERT INTO $table (nome, telefone, endereco, email, cpf, rg, horario, login, senha) 
+            $sql = "INSERT INTO $target_table (nome, telefone, horario_de_trabalho, rg, endereco, email, cpf, login, senha) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("sssssssss", $nome, $telefone, $endereco, $email, $cpf, $rg, $horario_de_trabalho, $login, $hashed_password);
+            if (!$stmt) {
+                error_log("Erro ao preparar a query de inserção: " . $conn->error);
+                die("Erro ao registrar. Por favor, tente novamente mais tarde.");
+            }
+
+            $stmt->bind_param("sssssssss", $nome, $telefone, $horario_de_trabalho, $rg, $endereco, $email, $cpf, $login, $hashed_password);
 
             if ($stmt->execute()) {
-                $msg = "Registro bem-sucedido!";
+                $msg = "Registro bem sucedido!";
             } else {
-                $msg = "Erro ao registrar: " . $conn->error;
+                error_log("Erro ao executar a query de inserção: " . $stmt->error);
+                $msg = "Erro ao registrar. Por favor, tente novamente mais tarde.";
             }
+
             $stmt->close();
         }
     }
-}
+
 
 $conn->close();
 ?>
 
 <?php if (!empty($msg2)) : ?>
-        <p style="color: red;"><?= $msg2; ?></p>
-    <?php endif; ?>
+    <p style="color: red;"><?= $msg2; ?></p>
+<?php endif; ?>
 
-    <?php if ($msg): ?>
-        <div class="msg <?php echo strpos($msg, 'sucesso') !== false ? 'success' : ''; ?>">
-            <?php echo $msg; ?>
-        </div>
-    <?php endif; ?>
+<?php if ($msg): ?>
+    <div class="msg <?php echo strpos($msg, 'sucesso') !== false ? 'success' : ''; ?>">
+        <?php echo $msg; ?>
+    </div>
+<?php endif; ?>
