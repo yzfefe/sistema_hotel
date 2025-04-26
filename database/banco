@@ -27,7 +27,6 @@ create table recepcionista (
     horario time,
     login varchar(50),
     senha varchar (100)
-	
 );
 select * from recepcionista;
 
@@ -36,8 +35,6 @@ create table servicos (
     nome varchar(200),
     preco float,
     horario time
-    
-
 );
 select * from servicos;
 
@@ -50,7 +47,6 @@ create table gerente (
     telefone char(15),
     login varchar(50),
     senha varchar (100)
-
 );
 select * from gerente;
 
@@ -64,6 +60,7 @@ create table administrador(
 CREATE TABLE quartos (
     id_quarto INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
+    num_quarto INT NOT NULL,
     tipo VARCHAR(50) NOT NULL,
     preco_diaria DECIMAL(10,2) NOT NULL,
     andar INT NOT NULL
@@ -95,6 +92,7 @@ CREATE TABLE promocoes_quartos (
     tipo VARCHAR(100),
     nome varchar(100),
     id_item INT NOT NULL,
+    andar INT NOT NULL,
     preco_diaria_promo DECIMAL(10,2) NOT NULL
 );
 select * from promocoes_quartos;
