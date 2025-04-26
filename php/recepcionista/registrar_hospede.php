@@ -44,7 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($user_exists) {
             $msg = "Usuário já existe!";
-        } else {
+        }elseif (strlen($cpf)!== 14){
+            $msg = "O CPF deve conter 11 dígitos";
+        }elseif (strlen($telefone) !== 15){
+            $msg = "O número de telefone deve ter esse formato: (XX) XXXXX-XXXX"
+        }else {
             // Criptografar a senha
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
