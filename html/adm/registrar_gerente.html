@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caminho das Pedras - Rustic Hotel</title>
-    <link rel="stylesheet" type="text/css" href="../../css/admin/registrar_gerente.css">
+    <link rel="stylesheet" type="text/css" href="../css/registrar_gerente.css">
     
 </head>
 <body>
@@ -47,12 +47,14 @@
                     <button type="button" class="toggle-password" onclick="ver_senha('confirmar_senha')">👁️</button>
                 </div>
 
-                <button class="btn-enviar" type="submit">Enviar</button>    
             </form>
-        
-        
+            
+            
         </div>
     </div>
+    
+    <button class="btn-enviar" type="submit">Enviar</button>
+    <button class="btn-voltar" onclick="red()">Voltar</button>    
     
     <script>
         document.querySelector("#cpf").addEventListener("input", function() {
@@ -101,6 +103,10 @@
             } else {
                 passwordField.type = "password";
             }
+        }
+
+        function red(){
+            window.location.href = "http://127.0.0.1:5500/html/tela_adm.html"
         }
 
     
