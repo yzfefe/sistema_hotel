@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Quartos - Caminho das Pedras</title>
-    <link rel="stylesheet" href="../../css/gerente/cadastrar_quarto.css">
+    <link rel="stylesheet" href="../css/cadastrar_quartos.css">
 </head>
 <body>
     <header class="header">
@@ -12,25 +12,21 @@
     </header>
     
     <div class="form-container">
-        <h2>Cadastrar Quarto</h2>
  
         <form method="POST" action="../../php/gerente/cadastrar_quarto.php">
-            <label for="nome">Nome do Quarto:</label>
-            <input type="text" id="nome" name="nome" placeholder="Informe o nome do quarto" required>
-
-            <label for="nome">Nº do Quarto:</label>
-            <input type="number" id="num_quarto" name="num_quarto" placeholder="Informe o nº do quarto" required>
+            <label for="nome">Nº do Quarto</label>
+            <input type="number" id="nome" name="nome" placeholder="Informe o nº do quarto" required>
             
-            <label for="andar">Andar:</label>
+            <label for="andar">Andar</label>
             <input type="number" id="andar" name="andar" placeholder="Informe o andar do quarto" required>
             
-            <label for="tipo">Tipo:</label>
+            <label for="tipo">Tipo</label>
             <input type="text" id="tipo" name="tipo" placeholder="Ex:(suíte normal ou suíte plus)" required>
 
-            <label for="preco">Preço:</label>
+            <label for="preco">Preço</label>
             <input type="number" id="preco" name="preco" placeholder="Informe o preço" required>
 
-            <button type="submit" class="btn-enviar">Enviar</button>
+            <button type="submit" class="btn-enviar">Cadastrar</button>
         </form>
     </div>
 </body>
