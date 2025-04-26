@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $login = $conn->real_escape_string($_POST['login']);
     $senha = $_POST['senha'];
     $confirmar_senha = $_POST['confirmar_senha'];
-
+    
     // Verificar se as senhas coincidem
     if ($senha !== $confirmar_senha) {
         $msg = "As senhas não coincidem!";
@@ -59,14 +59,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
         if ($user_exists) {
             $msg = "Usuário já existe!";
-        } else {
+        }elseif(strlen($cpf)!== 14){
+            $msg = "O CPF deve conter 11 dígitos";
+        }elseif(strlen($telefone) !== 15){
+            $msg = "O número de telefone deve ter esse formato: (XX) XXXXX-XXXX";
+        }else {
             // Tabela de destino
             $target_table = "recepcionista";
 
             $hashed_password = password_hash($senha, PASSWORD_DEFAULT);
 
             // Inserir novo usuário no banco de dados
-            $sql = "INSERT INTO $target_table (nome, telefone, horario_de_trabalho, rg, endereco, email, cpf, login, senha) 
+            $sql = "INSERT INTO $target_table (nome, telefone, horario, rg, endereco, email, cpf, login, senha) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $conn->prepare($sql);
