@@ -24,13 +24,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Se a atualização foi acionada
     if (isset($_POST['update'])) {
-        $id_item = $_POST['id_item']; // ID da promoção
         $nome = $_POST['nome'];
-        $tipo_serv = $_POST['tipo'];
+        $horario_comeca = $_POST['horario_comeca'];
+        $horario_termina = $_POST['horario_termina'];
         $preco_promocional = (float)$_POST['preco_promocional']; // Garantir que seja float
 
-        $sql1 = $conn->prepare("INSERT INTO promocoes_servicos (tipo_serv, nome, id_item, preco_promocional) VALUES (?, ?, ?, ?)");
-        $sql1->bind_param("ssii", $tipo_serv, $nome, $id_item, $preco_promocional);
+        $sql1 = $conn->prepare("INSERT INTO promocoes_servicos (nome, horario_comeca, horario_termina, preco_promocional, disponivel) VALUES (?, ?, ?, ?, TRUE)");
+        $sql1->bind_param("ssss", $nome, $horario_comeca, $horario_termina, $preco_promocional);
 
         if ($sql1->execute()) {
             echo "Registro inserido com sucesso!";
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Gerenciar Promocoes e Servicos</title>
 </head>
 <body>
-    <h2>Buscar Promoção</h2>
+    <h2>Buscar Serviço</h2>
     <form method="post">
         <input type="text" name="search" placeholder="Digite o ID ou Nome da promoção">
         <button type="submit">Buscar</button>
@@ -59,10 +59,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- Exibindo resultados da busca -->
         <?php while ($row = $result->fetch_assoc()): ?>
             <form method="post">
+                
                 <input type="text" name="id_item" value="<?php echo $row['id_serv']; ?>"><br>
+
+                <label for="nome">Nome: </label>
                 <input type="text" name="nome" value="<?php echo $row['nome']; ?>"> <br>
-                <input type="text" name="tipo" value="<?php echo $row['tipo']; ?>"><br>
-                <input type="text" name="horario" value="<?php echo $row['horario']; ?>"> <br>
+
+                <label for="horario_comeca">Horário Inicial: </label>
+                <input type="text" name="horario_comeca" value="<?php echo $row['horario_comeca']; ?>"> <br>
+
+                <label for="horario_termina">Horário Termina: </label>
+                <input type="text" name="horario_termina" value="<?php echo $row['horario_termina']; ?>"> <br>
+
+                <label for="preco">Preço Promocional: </label>
                 <input type="number" name="preco_promocional" value="<?php echo $row['preco']; ?>"> <br>
                 <button type="submit" name="update">Atualizar</button>
             </form>
