@@ -34,9 +34,11 @@ create table servicos (
 	id_serv int primary key auto_increment,
     nome varchar(200),
     preco float,
-    horario time
+    horario_comeca time,
+    horario_termina time,
+    disponivel boolean
 );
-select * from servicos;
+select * from servicos;	
 
 create table gerente (
 	id_ger int primary key auto_increment,
@@ -80,9 +82,10 @@ select * from reservas;
 
 CREATE TABLE promocoes_servicos (
     id_promocao INT PRIMARY KEY AUTO_INCREMENT,
-    tipo_serv VARCHAR(100),
     nome varchar(100),
-    id_item INT NOT NULL,
+    horario_comeca time,
+    horario_termina time,
+    disponivel boolean,
     preco_promocional DECIMAL(10,2) NOT NULL
 );
 select * from promocoes_servicos;
