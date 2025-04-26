@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <form method="post">
                 <input type="hidden" name="id_recep" value="<?php echo $row['id_recep']; ?>">
                 <input type="text" name="nome" value="<?php echo $row['nome']; ?>">
-                <input type="text" name="cpf" value="<?php echo $row['cpf']; ?>">
+                <input type="text" id="cpf" name="cpf" maxlength="14" minlength="14" onkeypress="cpf()" value="<?php echo $row['cpf']; ?>">
                 <input type="email" name="email" value="<?php echo $row['email']; ?>">
                 <button type="submit" name="update">Atualizar</button>
                 <button type="submit" name="delete">Excluir</button>
@@ -54,5 +54,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php elseif (isset($result)): ?>
         <p>Nenhuma recepcionista encontrada.</p>
     <?php endif; ?>
+
+    <script>
+        document.querySelector("#cpf").addEventListener("input", function() {
+            let cpf = this.value.replace(/\D/g, ""); // Remove tudo que não for número
+            if (cpf.length > 11) cpf = cpf.slice(0, 11); // Limita a 11 caracteres numéricos
+    
+            // Formata como XXX.XXX.XXX-XX
+            if (cpf.length > 9) {
+                cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+            } else if (cpf.length > 6) {
+                cpf = cpf.replace(/(\d{3})(\d{3})(\d{1,3})/, "$1.$2.$3");
+            } else if (cpf.length > 3) {
+                cpf = cpf.replace(/(\d{3})(\d{1,3})/, "$1.$2");
+            }
+
+            this.value = cpf;
+        });
+    </script>
 </body>
 </html>
