@@ -15,19 +15,23 @@
     </header>
     <div class="form-container">
 
-        <label for="nome">E-mail:</label>
+        <label for="nome">E-mail</label>
         <input type="nome" id="nome" name="nome" placeholder="Informe seu e-mail.">
         
-        <label for="horario">Senha:</label>
+        <label for="horario">Senha</label>
         <input type="password" id="senha" name="senha" placeholder="Informe a senha.">
 
     </div>
 
     <button class="btn-enviar">Entrar</button>
-
+    <button class="btn-voltar" onclick="red()">Voltar</button>
     
 
 </body>
-    
+    <script>
+        function red(){
+            window.location.href = "http://127.0.0.1:5500/html/tela_hospede.html"
+        }
+    </script>
 
 </html>
