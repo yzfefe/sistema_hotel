@@ -26,8 +26,17 @@
             <label for="preco">Preço</label>
             <input type="number" id="preco" name="preco" placeholder="Informe o preço" required>
 
-            <button type="submit" class="btn-enviar">Cadastrar</button>
         </form>
     </div>
+
+    <button type="submit" class="btn-enviar">Cadastrar</button>
+    <button class="btn-voltar" onclick="red()">Voltar</button>
+
+    <script>
+        function red(){
+            window.location.href ="http://127.0.0.1:5500/html/tela_gerente.html"
+        }
+    </script>
+
 </body>
 </html>
