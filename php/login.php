@@ -1,18 +1,25 @@
 <?php
 session_start();
-include('conex.php');
-
+include "conex.php";
+include "../html/login.html";
 $erro = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $login = $_POST['login'] ?? '';
     $password = $_POST['senha'] ?? '';
 
-    $tables = ['administrador', 'gerente', 'recepcionista', 'hospede'];
+    // Tabelas e respectivos campos de ID
+    $tables = [
+        'administrador' => 'id_admin',
+        'gerente' => 'id_ger',
+        'recepcionista' => 'id_recep',
+        'hospede' => 'id_hos'
+    ];
+
     $user = null;
     $role = null;
 
-    foreach ($tables as $table) {
+    foreach ($tables as $table => $id_field) {
         $query = "SELECT * FROM $table WHERE login = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("s", $login);
@@ -24,60 +31,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (password_verify($password, $user['senha'])) {
                 $role = $table;
-                break;
+
+                // Salva o ID correto na sessão
+                $_SESSION['user_id'] = $user[$id_field];
+                $_SESSION['role'] = $role;
+
+                // Redireciona para o dashboard correto
+                $redirects = [
+                    'administrador' => 'admin/dashboard_admin.php',
+                    'gerente' => 'gerente/dashboard_gerente.php',
+                    'recepcionista' => 'recepcionista/dashboard_recepcionista.php',
+                    'hospede' => '../html/hospede/tela_hospede.html'
+                ];
+
+                header("Location: " . $redirects[$role]);
+                exit();
             }
         }
     }
 
-    if ($user && $role) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['role'] = $role;
-
-        // Redireciona para o dashboard correspondente
-        $redirects = [
-            'administrador' => 'admin/dashboard_admin.php',
-            'gerente' => 'gerente/dashboard_gerente.php',
-            'recepcionista' => 'recepcionista/dashboard_recepcionista.php',
-            'hospede' => 'hospede/dashboard_hospede.php'
-        ];
-
-        header("Location: " . $redirects[$role]);
-        exit();
-    } else {
-        $erro = "Usuário ou senha incorretos.";
-    }
+    // Se chegou aqui, login falhou
+    $erro = "Usuário ou senha incorretos.";
 }
 ?>
-
-<!-- HTML COMEÇA AQUI -->
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caminho das Pedras - Rustic Hotel</title>
-    <link rel="stylesheet" href="css/login.css">
-</head>
-<body>
-    <header class="header">
-        <img src="img/logo_hoteel.png" alt="Caminho das Pedras - Rustic Hotel">
-    </header>
-
-    <div class="form-container">
-        <form action="login.php" method="post">
-
-            <label for="login">Login:</label>
-            <input type="text" id="login" name="login" placeholder="Digite seu Login" required>
-
-            <label for="senha">Senha:</label>
-            <input type="password" id="senha" name="senha" placeholder="Informe a Senha" required>
-
-            <button class="btn-enviar" type="submit">Enviar</button>
-
-            <?php if (!empty($erro)) : ?>
-                <p class="mensagem erro"><?= htmlspecialchars($erro); ?></p>
-            <?php endif; ?>
-        </form>
-    </div>
-</body>
-</html>
