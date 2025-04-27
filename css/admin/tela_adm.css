@@ -77,6 +77,20 @@ label{
     cursor: pointer;
     transition: background 0.4s ease;
 }
+.btn-log{
+    display: flex;
+    flex-direction: column;
+    margin: -10px auto;
+    padding: 15px 135px;
+    background-color: #c49a6c;
+    color: white; /* Cor do texto */
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.4s ease; 
+}
 
 .btn-cad:hover {
   background-color: #7d3a26; /* Cor ao passar o mouse */
@@ -84,6 +98,11 @@ label{
 }
 
 .btn-relat:hover {
+    background-color: #7d3a26; /* Cor ao passar o mouse */
+  
+  }
+
+.btn-log:hover {
     background-color: #7d3a26; /* Cor ao passar o mouse */
   
   }
