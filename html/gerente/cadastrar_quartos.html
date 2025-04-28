@@ -12,7 +12,7 @@
     </header>
     
     <div class="form-container">
-        <h2>Cadastrar Quarto</h2>
+       
  
         <form method="POST" action="../../php/gerente/cadastrar_quarto.php">
             <label for="nome">Nome do Quarto:</label>
@@ -31,14 +31,14 @@
             <input type="number" step="0.01" id="preco" name="preco" placeholder="Informe o preço" required>
 
             <button type="submit" class="btn-enviar">Enviar</button>
+            <button class="btn-voltar" onclick="red()">Voltar</button>
         </form>
-        <button class="btn-voltar" onclick="red()">Voltar</button>
     </div>
     
 
     <script>
         function red(){
-            window.location.href ="http://localhost/sistema_hotel-main/html/gerente/tela_gerente.html"
+            window.location.href ="http://127.0.0.1:5500/html/gerente/tela_gerente.html"
         }
     </script>
 </body>
