@@ -8,7 +8,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql = "SELECT * FROM quartos WHERE nome = ? OR id_quarto LIKE ?";
         $stmt = $conn->prepare($sql);
 
-        
         // Adicionando os parâmetros ao prepared statement
         $search_like = "%$search%";
         $stmt->bind_param("ss", $search, $search_like);
@@ -21,7 +20,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     
-
     // Se a atualização foi acionada
     if (isset($_POST['update'])) { // ID da promoção
         $nome = $_POST['nome'];
@@ -36,8 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "Erro ao inserir registro: " . $sql1->error;
         }
-        
-        
     }
 }
 ?>
@@ -48,11 +44,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Gerenciar Promoções de quartos</title>
 </head>
 <body>
-    <h2>Buscar Quarto</h2>
-    <form method="post">
-        <input type="text" name="search" placeholder="Digite o ID ou Nome">
-        <button type="submit">Buscar</button>
-    </form>
 
     <?php if (isset($result) && $result->num_rows > 0): ?>
         <!-- Exibindo resultados da busca -->
