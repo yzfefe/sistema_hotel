@@ -5,22 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caminho das Pedras - Rustic Hotel</title>
     <link rel="stylesheet" href="../../css/gerente/quarto_promocao.css">
-    
 </head>
 <body>
     <header class="header">
         <img src="../../img/logo_hoteel.png" alt="Caminho das Pedras - Rustic Hotel">
-        
     </header>
-    <div class="form-container">
+    <form action="../../php/gerente/cadastrar_quartos_promocoes.php" method="post">
+        <div class="form-container">
+            <label for="rec">Quarto</label>
+            <input type="text" name="search" required>
+        </div>
 
-        <label for="rec">Quarto</label>
-        <input type="text">
-    
-        
+        <button type="submit" class="btn-enviar">Consultar</button>
+    </form>
 
-    </div>
-    <button class="btn-enviar">Consultar</button>
     <button class="btn-voltar" onclick="red()">Voltar</button>
 </body>
 
