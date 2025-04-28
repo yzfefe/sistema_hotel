@@ -77,12 +77,12 @@ label{
     cursor: pointer;
     transition: background 0.4s ease;
 }
-.btn-log{
+.btn-sair{
     display: flex;
     flex-direction: column;
     margin: -10px auto;
-    padding: 15px 135px;
-    background-color: #c49a6c;
+    padding: 15px 15px;
+    background-color: rgb(109, 109, 108);
     color: white; /* Cor do texto */
     font-size: 16px;
     font-weight: bold;
@@ -91,6 +91,7 @@ label{
     cursor: pointer;
     transition: background 0.4s ease; 
 }
+
 
 .btn-cad:hover {
   background-color: #7d3a26; /* Cor ao passar o mouse */
