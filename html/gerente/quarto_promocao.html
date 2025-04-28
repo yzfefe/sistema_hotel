@@ -5,26 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caminho das Pedras - Rustic Hotel</title>
     <link rel="stylesheet" href="../../css/gerente/quarto_promocao.css">
+    
 </head>
 <body>
     <header class="header">
         <img src="../../img/logo_hoteel.png" alt="Caminho das Pedras - Rustic Hotel">
+        
     </header>
-    <form action="../../php/gerente/cadastrar_quartos_promocoes.php" method="post">
-        <div class="form-container">
-            <label for="rec">Quarto</label>
-            <input type="text" name="search" required>
-        </div>
+    <div class="form-container">
 
-        <button type="submit" class="btn-enviar">Consultar</button>
-    </form>
+        <label for="rec">Quarto</label>
+        <input type="text">
+    
+        
 
+    </div>
+    <button class="btn-enviar">Consultar</button>
     <button class="btn-voltar" onclick="red()">Voltar</button>
 </body>
 
     <script>
         function red(){
-            window.location.href = "http://localhost/sistema_hotel-main/html/gerente/tela_gerente.html"
+            window.location.href = "http://127.0.0.1:5500/html/gerente/tela_gerente.html"
         }
     </script>
 </html>
