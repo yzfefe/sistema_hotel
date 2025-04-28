@@ -63,25 +63,25 @@ label{
     transition: background 0.4s ease;
 }
 
-.btn-login{
+.btn-sair{
     display: flex;
     flex-direction: column;
-    margin: 25px auto;
-    padding: 15px 135px;
-    background-color: #c49a6c;
+    margin: -10px auto;
+    padding: 15px 15px;
+    background-color: rgb(109, 109, 108);
     color: white; /* Cor do texto */
     font-size: 16px;
     font-weight: bold;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background 0.4s ease;
-}
+    transition: background 0.4s ease; 
+  }
 
 .btn-reserv{
     display: flex;
     flex-direction: column;
-    margin: -10px auto;
+    margin: 30px auto;
     padding: 15px 87px;
     background-color: #c49a6c;
     color: white; /* Cor do texto */
