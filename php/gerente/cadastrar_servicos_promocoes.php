@@ -47,6 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html>
 <head>
     <title>Gerenciar Promocoes e Servicos</title>
+    <link rel="stylesheet" href="../../css/gerente/servico_promocao.css">
 </head>
 <body>
     <h2>Buscar Serviço</h2>
