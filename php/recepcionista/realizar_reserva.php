@@ -6,17 +6,21 @@ $mensagem = '';
 $tipo_mensagem = '';
 $preco_diaria = 0;
 
-// Se GET, carrega preços dos quartos para exibição
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    $precos_quartos = [];
+// Função para carregar preços dos quartos disponíveis
+function carregarPrecosQuartos($conn) {
+    $precos = [];
     $sql = "SELECT id_quarto, preco_diaria FROM quartos WHERE disponivel = TRUE";
     $result = $conn->query($sql);
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            $precos_quartos[$row['id_quarto']] = $row['preco_diaria'];
+            $precos[$row['id_quarto']] = $row['preco_diaria'];
         }
     }
+    return $precos;
 }
+
+// Carrega preços dos quartos para exibição
+$precos_quartos = carregarPrecosQuartos($conn);
 
 // Processa o formulário POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -34,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         try {
             // 1. Insere a reserva
             $stmt_reserva = $conn->prepare("INSERT INTO reservas (id_hos, id_quarto, data_reserva, status_atual) 
-                                          VALUES (?, ?, ?, 'CONFIRMADA')");
+                                        VALUES (?, ?, ?, 'CONFIRMADA')");
             $stmt_reserva->bind_param("iis", $cliente_id, $quarto_id, $data_entrada);
             $stmt_reserva->execute();
             
@@ -60,8 +64,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
                 // 4. Atualiza gastos do hóspede
                 $stmt_gastos = $conn->prepare("UPDATE hospede SET gastos_atuais = gastos_atuais + ?, gastos_totais = gastos_totais + ? WHERE id_hos = ?");
-                
-                // Usar "ddi" se os campos forem DECIMAL, ou "iii" se forem INT
                 $stmt_gastos->bind_param("ddi", $preco_diaria, $preco_diaria, $cliente_id);
                 $stmt_gastos->execute();
             }
@@ -70,6 +72,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $conn->commit();
             $mensagem = "Reserva realizada com sucesso!";
             $tipo_mensagem = "success";
+            
+            // Recarrega os preços após a reserva
+            $precos_quartos = carregarPrecosQuartos($conn);
             
         } catch (Exception $e) {
             // Rollback em caso de erro
@@ -118,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <form method="post" action="">
                 <div class="mb-3">
                     <label for="cliente" class="form-label">Selecione o Cliente:</label>
-                    <select class="form-select" id="cliente" name="cliente_id"      required>
+                    <select class="form-select" id="cliente" name="cliente_id" required>
                         <?php
                         $sql = "SELECT id_hos, nome, telefone FROM hospede";
                         $result = $conn->query($sql);
@@ -137,12 +142,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label for="quarto" class="form-label">Selecione o Quarto:</label>
                     <select class="form-select" id="quarto" name="quarto_id" required>
                         <?php
-                        $sql = "SELECT id_quarto, nome, tipo FROM quartos WHERE disponivel = TRUE";
+                        $sql = "SELECT id_quarto, nome, tipo, preco_diaria FROM quartos WHERE disponivel = TRUE";
                         $result = $conn->query($sql);
                         
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
-                                $preco = isset($precos_quartos[$row['id_quarto']]) ? number_format($precos_quartos[$row['id_quarto']], 2, ',', '.') : '0,00';
+                                $preco = number_format($row['preco_diaria'], 2, ',', '.');
                                 echo "<option value='".$row['id_quarto']."' data-preco='".$preco."'>"
                                     .$row['nome']." - ".$row['tipo']." (R$ ".$preco.")"
                                     ."</option>";
