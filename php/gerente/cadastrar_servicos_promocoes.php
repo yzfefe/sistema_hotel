@@ -76,9 +76,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="number" name="preco_promocional" value="<?php echo $row['preco']; ?>"> <br>
                 <button type="submit" name="update">Atualizar</button>
             </form>
+            
         <?php endwhile; ?>
     <?php elseif (isset($result)): ?>
         <p>Nenhuma promoção encontrada.</p>
     <?php endif; ?>
+
+    <button class="btn-voltar" onclick="red()">Voltar</button>
+    <script>
+        function red(){
+            window.location.href = "http://localhost/sistema_hotel-main/html/gerente/tela_gerente.html"
+        }
+    </script>
 </body>
 </html>
