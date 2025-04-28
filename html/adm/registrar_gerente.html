@@ -46,14 +46,14 @@
                     <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Confirme a Senha">
                     <button type="button" class="toggle-password" onclick="ver_senha('confirmar_senha')">👁️</button>
                 </div>
+                
                 <button class="btn-enviar" type="submit">Cadastrar</button>
-           
+                <button class="btn-voltar" onclick="red()">Voltar</button>    
             </form>
         </div>
     </div>
-
     
-    <button class="btn-voltar" onclick="red()">Voltar</button>    
+    
     
     <script>
         document.querySelector("#cpf").addEventListener("input", function() {
@@ -105,7 +105,7 @@
         }
 
         function red(){
-            window.location.href = "http://localhost/sistema_hotel-main/html/adm/tela_adm.html"
+            window.location.href = "http://127.0.0.1:5500/html/adm/tela_adm.html"
         }
 
     
