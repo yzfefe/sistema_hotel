@@ -105,13 +105,14 @@ CREATE TABLE promocoes_servicos (
 select * from promocoes_servicos;
 
 CREATE TABLE promocoes_quartos (
-    id_quarto_promo INT PRIMARY KEY AUTO_INCREMENT,
-    tipo VARCHAR(100),
-    nome varchar(100),
-    id_item INT NOT NULL,
-    andar INT NOT NULL,
-    preco_diaria_promo DECIMAL(10,2) NOT NULL,
-    disponivel boolean default true
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_quarto INT NOT NULL,
+    preco_promocional DECIMAL(10,2) NOT NULL,
+    data_inicio DATE NOT NULL,
+    data_fim DATE NOT NULL,
+    data_criacao DATETIME NOT NULL,
+    data_atualizacao DATETIME,
+    FOREIGN KEY (id_quarto) REFERENCES quartos(id_quarto)
 );
 select * from promocoes_quartos;
 
