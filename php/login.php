@@ -2,7 +2,7 @@
 session_start();
 include "conex.php";
 include "../html/login.html";
-$erro = "";
+$erro = "oiii";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $login = $_POST['login'] ?? '';
@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Tabelas e respectivos campos de ID
     $tables = [
-        'administrador' => 'id_admin',
+        'administrador' => 'id_adm',
         'gerente' => 'id_ger',
         'recepcionista' => 'id_recep',
         'hospede' => 'id_hos'
@@ -29,28 +29,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($result && $result->num_rows === 1) {
             $user = $result->fetch_assoc();
 
+            // Verifica primeiro se a senha está criptografada
             if (password_verify($password, $user['senha'])) {
                 $role = $table;
+            } 
+            // Se não estiver criptografada, faz comparação direta
+            elseif ($password === $user['senha']) {
+                $role = $table;
+            }
 
+            // Se autenticado (por qualquer método)
+            if ($role) {
                 // Salva o ID correto na sessão
                 $_SESSION['user_id'] = $user[$id_field];
                 $_SESSION['role'] = $role;
 
                 // Redireciona para o dashboard correto
                 $redirects = [
-                    'administrador' => 'admin/dashboard_admin.php',
-                    'gerente' => 'gerente/dashboard_gerente.php',
-                    'recepcionista' => 'recepcionista/dashboard_recepcionista.php',
+                    'administrador' => '../html/adm/tela_adm.html',
+                    'gerente' => '../html/gerente/tela_gerente.php',
+                    'recepcionista' => '../html/recepcionista/tela_recep.ht',
                     'hospede' => '../html/hospede/tela_hospede.html'
                 ];
 
                 header("Location: " . $redirects[$role]);
                 exit();
+                $erro = "Deu algum erro.";
             }
         }
     }
 
     // Se chegou aqui, login falhou
-    $erro = "Usuário ou senha incorretos.";
+    // $erro = "Usuário ou senha incorretos.";
+    // echo $erro;
 }
 ?>
