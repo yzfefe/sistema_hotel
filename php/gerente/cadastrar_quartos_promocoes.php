@@ -1,62 +1,223 @@
 <?php
 include "../conex.php";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Se a busca foi acionada
-    if (isset($_POST['search'])) {
-        $search = $_POST['search'];
-        $sql = "SELECT * FROM quartos WHERE nome = ? OR id_quarto LIKE ?";
-        $stmt = $conn->prepare($sql);
+// Variável para mensagens de feedback
+$feedback = '';
 
-        // Adicionando os parâmetros ao prepared statement
-        $search_like = "%$search%";
-        $stmt->bind_param("ss", $search, $search_like);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Busca de quartos
+    if (isset($_POST['search'])) {
+        $search = trim($_POST['search']);
+        $sql = "SELECT * FROM quartos WHERE nome LIKE ? OR num_quarto = ?";
+        $stmt = $conn->prepare($sql);
         
-        // Executando a consulta
+        $search_like = "%$search%";
+        $stmt->bind_param("si", $search_like, $search);
+        
         if ($stmt->execute()) {
             $result = $stmt->get_result();
         } else {
-            echo "Erro ao executar a busca: " . $stmt->error;
+            $feedback = '<div class="alert alert-danger">Erro ao buscar quartos: ' . $stmt->error . '</div>';
         }
     }
     
-    // Se a atualização foi acionada
-    if (isset($_POST['update'])) { // ID da promoção
-        $nome = $_POST['nome'];
-        $tipo = $_POST['tipo'];
-        $preco_diaria_promo = (float)$_POST['preco_diaria_promo']; // Garantir que seja float
-
-        $sql1 = $conn->prepare("INSERT INTO promocoes_quartos (tipo, nome, preco_diaria_promo) VALUES (?, ?, ?)");
-        $sql1->bind_param("ssi", $tipo, $nome, $preco_diaria_promo);
-
-        if ($sql1->execute()) {
-            echo "Registro inserido com sucesso!";
+    // Aplicar/Atualizar promoção
+    if (isset($_POST['update'])) {
+        $id_quarto = (int)$_POST['id_quarto'];
+        $preco_promocional = (float)$_POST['preco_promocional'];
+        $data_inicio = $_POST['data_inicio'];
+        $data_fim = $_POST['data_fim'];
+        
+        // Verificar se já existe promoção para este quarto
+        $check_sql = "SELECT id FROM promocoes_quartos WHERE id_quarto = ?";
+        $check_stmt = $conn->prepare($check_sql);
+        $check_stmt->bind_param("i", $id_quarto);
+        $check_stmt->execute();
+        $check_result = $check_stmt->get_result();
+        
+        if ($check_result->num_rows > 0) {
+            // Atualizar promoção existente
+            $update_sql = "UPDATE promocoes_quartos SET 
+                          preco_promocional = ?, 
+                          data_inicio = ?, 
+                          data_fim = ?,
+                          data_atualizacao = NOW()
+                          WHERE id_quarto = ?";
+            $stmt = $conn->prepare($update_sql);
+            $stmt->bind_param("dssi", $preco_promocional, $data_inicio, $data_fim, $id_quarto);
         } else {
-            echo "Erro ao inserir registro: " . $sql1->error;
+            // Inserir nova promoção
+            $insert_sql = "INSERT INTO promocoes_quartos 
+                          (id_quarto, preco_promocional, data_inicio, data_fim, data_criacao) 
+                          VALUES (?, ?, ?, ?, NOW())";
+            $stmt = $conn->prepare($insert_sql);
+            $stmt->bind_param("idss", $id_quarto, $preco_promocional, $data_inicio, $data_fim);
+        }
+        
+        if ($stmt->execute()) {
+            $feedback = '<div class="alert alert-success">Promoção aplicada com sucesso!</div>';
+        } else {
+            $feedback = '<div class="alert alert-danger">Erro ao aplicar promoção: ' . $stmt->error . '</div>';
         }
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <title>Gerenciar Promoções de quartos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Promoções de Quartos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        .card-quarto {
+            transition: transform 0.3s;
+        }
+        .card-quarto:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .preco-original {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+        .preco-promocao {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
+    <div class="container py-5">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1 class="text-center">
+                    <i class="bi bi-percent"></i> Gerenciar Promoções de Quartos
+                </h1>
+            </div>
+        </div>
 
-    <?php if (isset($result) && $result->num_rows > 0): ?>
-        <!-- Exibindo resultados da busca -->
-        <?php while ($row = $result->fetch_assoc()): ?>
-            <form method="post">
-                <input type="text" name="nome" value="<?php echo $row['nome']; ?>"> <br>
-                <input type="text" name="tipo" value="<?php echo $row['tipo']; ?>"><br>
-                <input type="number" name="preco_diaria_promo" value="<?php echo $row['preco_diaria']; ?>"> <br>
-                <button type="submit" name="update">Atualizar</button>
-            </form>
-        <?php endwhile; ?>
-    <?php elseif (isset($result)): ?>
-        <p>Nenhuma promoção encontrada.</p>
-    <?php endif; ?>
+        <!-- Feedback messages -->
+        <?php if (!empty($feedback)) echo $feedback; ?>
+
+        <!-- Search Form -->
+        <div class="row mb-4">
+            <div class="col-md-8 mx-auto">
+                <form method="post" class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control form-control-lg" 
+                                   placeholder="Buscar por nome ou número do quarto..." required>
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-search"></i> Buscar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <?php if (isset($result)): ?>
+            <div class="row">
+                <?php if ($result->num_rows > 0): ?>
+                    <?php while ($quarto = $result->fetch_assoc()): ?>
+                        <div class="col-md-6 mb-4">
+                            <div class="card card-quarto h-100">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="card-title mb-0">
+                                        <i class="bi bi-door-open"></i> <?= htmlspecialchars($quarto['nome']) ?>
+                                        <span class="badge bg-light text-dark float-end">
+                                            #<?= $quarto['num_quarto'] ?>
+                                        </span>
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <form method="post">
+                                        <input type="hidden" name="id_quarto" value="<?= $quarto['id_quarto'] ?>">
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Tipo:</label>
+                                                <input type="text" class="form-control" value="<?= htmlspecialchars($quarto['tipo']) ?>" readonly>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Andar:</label>
+                                                <input type="text" class="form-control" value="<?= $quarto['andar'] ?>" readonly>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label">Preço Diária Original:</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">R$</span>
+                                                <input type="text" class="form-control preco-original" 
+                                                       value="<?= number_format($quarto['preco_diaria'], 2, ',', '.') ?>" readonly>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="preco_promocional" class="form-label">Preço Promocional:</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">R$</span>
+                                                <input type="number" step="0.01" class="form-control preco-promocao" 
+                                                       id="preco_promocional" name="preco_promocional" 
+                                                       value="<?= number_format($quarto['preco_diaria'] * 0.9, 2, '.', '') ?>" 
+                                                       min="0" required>
+                                            </div>
+                                            <small class="text-muted">Sugerimos 10% de desconto (altere se necessário)</small>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="data_inicio" class="form-label">Data Início:</label>
+                                                <input type="date" class="form-control" id="data_inicio" 
+                                                       name="data_inicio" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="data_fim" class="form-label">Data Fim:</label>
+                                                <input type="date" class="form-control" id="data_fim" 
+                                                       name="data_fim" required>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="d-grid">
+                                            <button type="submit" name="update" class="btn btn-success">
+                                                <i class="bi bi-check-circle"></i> Aplicar Promoção
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <div class="col-12">
+                        <div class="alert alert-warning text-center">
+                            <i class="bi bi-exclamation-triangle"></i> Nenhum quarto encontrado com os critérios de busca.
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set default dates (today + 7 days)
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const nextWeek = new Date();
+            nextWeek.setDate(today.getDate() + 7);
+            
+            document.getElementById('data_inicio').valueAsDate = today;
+            document.getElementById('data_fim').valueAsDate = nextWeek;
+        });
+    </script>
 </body>
 </html>
