@@ -15,7 +15,7 @@ CREATE TABLE hospede(
     gastos_totais DECIMAL(10,2),
     gastos_atuais DECIMAL(10,2)  -- Alterado para DECIMAL
 );
-select * from hospede;	
+select * from hospede;
 
 create table recepcionista (
 	id_recep int primary key auto_increment,
