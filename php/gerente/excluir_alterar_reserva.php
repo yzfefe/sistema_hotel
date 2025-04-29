@@ -29,7 +29,7 @@ if (isset($_GET['excluir'])) {
             $preco_diaria = $reserva['preco_diaria'];
             
             // 2. Remove a reserva
-            $stmt_delete = $conn->prepare("DELETE FROM reservas WHERE id_reserva = ?");
+            $stmt_delete = $conn->prepare("UPDATE reservas SET status_atual  = 'ENCERRADA' WHERE id_reserva = ?;");
             $stmt_delete->bind_param("i", $reserva_id);
             $stmt_delete->execute();
             
@@ -47,7 +47,7 @@ if (isset($_GET['excluir'])) {
             
             // Confirma transação
             $conn->commit();
-            $mensagem = "Reserva excluída com sucesso! Quarto liberado.";
+            $mensagem = "Reserva Encerrada com sucesso! Quarto liberado.";
             $tipo_mensagem = "success";
         } else {
             throw new Exception("Reserva confirmada não encontrada");
