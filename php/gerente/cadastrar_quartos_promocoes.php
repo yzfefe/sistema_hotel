@@ -48,8 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             // Inserir nova promoção
             $insert_sql = "INSERT INTO promocoes_quartos 
-                          (id_quarto, preco_promocional, data_inicio, data_fim, data_criacao) 
-                          VALUES (?, ?, ?, ?, NOW())";
+                          (id_quarto, preco_promocional, data_inicio, data_fim, data_criacao, disponivel) 
+                          VALUES (?, ?, ?, ?, NOW(), TRUE)";
             $stmt = $conn->prepare($insert_sql);
             $stmt->bind_param("idss", $id_quarto, $preco_promocional, $data_inicio, $data_fim);
         }
