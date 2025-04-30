@@ -66,7 +66,7 @@ label{
 .btn-reserv{
     display: flex;
     flex-direction: column;
-    margin: -220px auto;
+    margin: 35px auto;
     padding: 15px 83px;
     background-color: #c49a6c;
     color: white; /* Cor do texto */
@@ -81,7 +81,7 @@ label{
 .btn-sair{
     display: flex;
     flex-direction: column;
-    margin: 100px auto;
+    margin: 0px auto;
     padding: 15px 15px;
     background-color: rgb(109, 109, 108);
     color: white; /* Cor do texto */
@@ -92,6 +92,68 @@ label{
     cursor: pointer;
     transition: background 0.4s ease;  
 }
+
+.btn-consult-h{
+    display: flex;
+    flex-direction: column;
+    margin: -12px auto;
+    padding: 15px 68px;
+    background-color: #c49a6c;
+    color: white; /* Cor do texto */
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.4s ease;
+}
+
+.btn-consult-r{
+    display: flex;
+    flex-direction: column;
+    margin: 37px auto;
+    padding: 15px 73px;
+    background-color: #c49a6c;
+    color: white; /* Cor do texto */
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.4s ease;
+}
+
+.btn-consult-q{
+    display: flex;
+    flex-direction: column;
+    margin: -15px auto;
+    padding: 15px 75px;
+    background-color: #c49a6c;
+    color: white; /* Cor do texto */
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.4s ease;
+}
+
+.btn-fec{
+    display: flex;
+    flex-direction: column;
+    margin: 35px auto;
+    padding: 15px 92px;
+    background-color: #c49a6c;
+    color: white; /* Cor do texto */
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.4s ease;
+}
+
+
 
 .btn-cad:hover {
   background-color: #7d3a26; /* Cor ao passar o mouse */
@@ -105,6 +167,26 @@ label{
 }
 
 .btn-log:hover {
+    background-color: #7d3a26; /* Cor ao passar o mouse */
+  
+}
+
+.btn-consult-h:hover {
+    background-color: #7d3a26; /* Cor ao passar o mouse */
+  
+}
+
+.btn-consult-r:hover {
+    background-color: #7d3a26; /* Cor ao passar o mouse */
+  
+}
+
+.btn-consult-q:hover {
+    background-color: #7d3a26; /* Cor ao passar o mouse */
+  
+}
+
+.btn-fec:hover {
     background-color: #7d3a26; /* Cor ao passar o mouse */
   
 }
