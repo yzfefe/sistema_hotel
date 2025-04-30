@@ -10,6 +10,7 @@ CREATE TABLE hospede(
     endereco varchar(250),
     telefone char(15),
     horario time,
+    status_atual varchar(100),
     login varchar(50),
     senha varchar(100),
     gastos_totais DECIMAL(10,2),
