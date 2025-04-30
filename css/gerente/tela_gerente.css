@@ -50,7 +50,7 @@ label{
 .btn-serv{
   display: flex;
   flex-direction: column;
-  margin: -10px auto;
+  margin: -50px auto;
   padding: 15px 70px;
   background-color: #c49a6c;
   color: white; /* Cor do texto */
