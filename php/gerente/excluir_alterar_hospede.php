@@ -5,8 +5,8 @@ $msg = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['search'])) {
         $search = $_POST['search'];
-        $stmt = $conn->prepare("SELECT * FROM hospede WHERE cpf = ?");
-        $stmt->bind_param("s", $search);
+        $stmt = $conn->prepare("SELECT * FROM hospede WHERE cpf = ? OR nome = ?");
+        $stmt->bind_param("ss", $search, $search);
         $stmt->execute();
         $result = $stmt->get_result();
     }
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (isset($_POST['delete'])) {
         $id_hos = $_POST['id_hos'];
-        $stmt = $conn->prepare("DELETE FROM hospede WHERE id_hos=?");
+        $stmt = $conn->prepare("UPDATE hospede SET status_atual = 'EXCLUÍDO' WHERE id_hos = ?");
         $stmt->bind_param("i", $id_hos);
         
         if($stmt->execute()) {
