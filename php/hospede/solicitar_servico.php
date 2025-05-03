@@ -14,30 +14,39 @@ $mensagem = "";
 // Processa solicitação de serviço
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_serv'])) {
     $id_servico = intval($_POST['id_serv']);
+    date_default_timezone_set('America/Sao_Paulo');
+    $horaAtual = date("H:i:s");
 
-    // Pega o preço do serviço
-    $stmt = $conn->prepare("SELECT preco FROM servicos WHERE id_serv = ? AND disponivel = TRUE");
+    // Pega os dados do serviço
+    $stmt = $conn->prepare("SELECT preco, horario_comeca, horario_termina FROM servicos WHERE id_serv = ? AND disponivel = TRUE");
     $stmt->bind_param("i", $id_servico);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($servico = $result->fetch_assoc()) {
         $preco = $servico['preco'];
+        $horaInicio = $servico['horario_comeca'];
+        $horaFim = $servico['horario_termina'];
 
-        // 1. Insere na tabela de solicitações
-        $stmt_insert = $conn->prepare("INSERT INTO solicitacoes_servico (id_hos, id_serv) VALUES (?, ?)");
-        $stmt_insert->bind_param("ii", $user_id, $id_servico);
-        $stmt_insert->execute();
+        // Verifica se está dentro do horário de atendimento
+        if ($horaAtual >= $horaInicio && $horaAtual <= $horaFim) {
+            // Inserir solicitação
+            $stmt_insert = $conn->prepare("INSERT INTO solicitacoes_servico (id_hos, id_serv) VALUES (?, ?)");
+            $stmt_insert->bind_param("ii", $user_id, $id_servico);
+            $stmt_insert->execute();
 
-        // 2. Atualiza os gastos do hóspede
-        $stmt_update = $conn->prepare("UPDATE hospede SET 
-            gastos_atuais = gastos_atuais + ?, 
-            gastos_totais = gastos_totais + ?
-            WHERE id_hos = ?");
-        $stmt_update->bind_param("ddi", $preco, $preco, $user_id);
-        $stmt_update->execute();
+            // Atualiza gastos
+            $stmt_update = $conn->prepare("UPDATE hospede SET 
+                gastos_atuais = gastos_atuais + ?, 
+                gastos_totais = gastos_totais + ?
+                WHERE id_hos = ?");
+            $stmt_update->bind_param("ddi", $preco, $preco, $user_id);
+            $stmt_update->execute();
 
-        $mensagem = "Serviço solicitado com sucesso!";
+            $mensagem = "Serviço solicitado com sucesso!";
+        } else {
+            $mensagem = "Serviço indisponível neste horário. Funcionamento: $horaInicio às $horaFim";
+        }
     } else {
         $mensagem = "Serviço não encontrado ou indisponível.";
     }
@@ -72,6 +81,14 @@ $result = $conn->query($sql);
             font-weight: bold;
         }
     </style>
+    <script>
+        function confirmarSolicitacao(event, form) {
+            event.preventDefault();
+            if (confirm("Você deseja solicitar este serviço?")) {
+                form.submit();
+            }
+        }
+    </script>
 </head>
 <body>
 
@@ -90,7 +107,7 @@ $result = $conn->query($sql);
                 <p><strong>Preço:</strong> R$ <?= number_format($servico['preco'], 2, ',', '.') ?></p>
                 <p><strong>Horário:</strong> <?= substr($servico['horario_comeca'], 0, 5) ?> às <?= substr($servico['horario_termina'], 0, 5) ?></p>
                 
-                <form method="post" action="">
+                <form method="post" onsubmit="confirmarSolicitacao(event, this);">
                     <input type="hidden" name="id_serv" value="<?= $servico['id_serv'] ?>">
                     <button type="submit" class="btn btn-sm btn-primary">Solicitar</button>
                 </form>
