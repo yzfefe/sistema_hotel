@@ -1,7 +1,7 @@
 <?php
 
 include "../conex.php";
-include "../../html/gerente/cadastrar_quarto.html";
+include "../../html/gerente/cadastrar_quartos.html";
 $msg = "";
 
 // Verifica se foi enviado via método POST
