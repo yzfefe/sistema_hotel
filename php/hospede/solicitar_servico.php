@@ -6,6 +6,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'hospede') {
     exit();
 }
 
+
 include "../conex.php";
 
 $user_id = $_SESSION['user_id'];
