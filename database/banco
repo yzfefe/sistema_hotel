@@ -45,7 +45,7 @@ select * from servicos;
 CREATE TABLE solicitacoes_servico (
     id_solicitacao INT AUTO_INCREMENT PRIMARY KEY,
     id_hos INT,
-    id_serv INT,
+    id_promocao INT,
     data_solicitacao DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 select * from solicitacoes_servico;
@@ -113,6 +113,7 @@ CREATE TABLE promocoes_quartos (
     data_fim DATE NOT NULL,
     data_criacao DATETIME NOT NULL,
     data_atualizacao DATETIME,
+    disponivel BOOLEAN,
     FOREIGN KEY (id_quarto) REFERENCES quartos(id_quarto)
 );
 select * from promocoes_quartos;
