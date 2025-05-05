@@ -80,7 +80,13 @@ $result = $conn->query($sql);
     <title>Promoções de Serviços</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <img src="../../img/logo_hoteel.png" alt="">
     <style>
+        img{
+            width: 20rem;
+            display: block;
+            margin: 0 auto;
+        }
         body {
             padding: 20px;
             background-color: #f8f9fa;
