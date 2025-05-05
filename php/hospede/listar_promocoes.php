@@ -17,7 +17,13 @@ function formatarHorario($time) {
 <head>
     <meta charset="UTF-8">
     <title>Promoções Disponíveis</title>
+    <img src="../../img/logo_hoteel.png" alt="">
     <style>
+        img{
+            width: 20rem;
+            display: block;
+            margin: 0 auto;
+        }
         body { font-family: Arial, sans-serif; margin: 20px; }
         h2 { color: #2c3e50; }
         .promo-container { margin-bottom: 30px; }
