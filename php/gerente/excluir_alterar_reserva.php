@@ -114,7 +114,13 @@ if ($result) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciar Reservas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <img src="../../img/logo_hoteel.png" alt="">
     <style>
+        img{
+            width: 20rem;
+            display: block;
+            margin: 0 auto;
+        }
         body {
             font-family: Arial, sans-serif;
             max-width: 1200px;
