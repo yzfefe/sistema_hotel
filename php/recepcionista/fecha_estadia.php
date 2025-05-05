@@ -1,3 +1,4 @@
+
 <?php
 include "../conex.php";
 
@@ -139,7 +140,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Sistema de Contas - Hotel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <img src="../../img/logo_hoteel.png" alt="">
     <style>
+        img{
+            width: 20rem;
+            display: block;
+            margin: 0 auto;
+        }
         .card-hospede {
             border-left: 5px solid #0d6efd;
         }
