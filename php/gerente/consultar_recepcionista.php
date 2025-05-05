@@ -14,13 +14,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['update'])) {
         $id_recep = $_POST['id_recep'];
         $nome = $_POST['nome'];
-        $cpf = preg_replace('/[^0-9]/', '', $_POST['cpf']); // Remove formatação
+        $cpf = preg_replace('/[^0-9]/', '', $_POST['cpf']);
         $email = $_POST['email'];
         $rg = $_POST['rg'];
-        $telefone = preg_replace('/[^0-9]/', '', $_POST['telefone']); // Remove formatação
+        $telefone = preg_replace('/[^0-9]/', '', $_POST['telefone']);
         $endereco = $_POST['endereco'];
         
-        if(strlen($cpf) != 11){ // Verifica os 11 dígitos reais
+        if(strlen($cpf) != 11){
             $msg = "Erro: O CPF deve conter 11 dígitos numéricos";
         } elseif(strlen($telefone) < 10 || strlen($telefone) > 11) {
             $msg = "Erro: O telefone deve ter 10 ou 11 dígitos (DDD + número)";
@@ -51,68 +51,132 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciar Recepcionistas</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
     <style>
-        .msg-erro { color: red; }
-        .msg-sucesso { color: green; }
+        body {
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+        .container-custom {
+            max-width: 800px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .btn-action {
+            margin-right: 10px;
+        }
+        .form-label {
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
-    <h2>Gerenciar Recepcionistas</h2>
-    
-    <!-- Área para exibir mensagens -->
-    <?php if (!empty($msg)): ?>
-        <div class="<?= strpos($msg, 'Sucesso') !== false ? 'msg-sucesso' : 'msg-erro' ?>">
-            <?= htmlspecialchars($msg) ?>
-        </div>
-    <?php endif; ?>
+    <div class="container container-custom">
+        <h2 class="text-center mb-4"><i class="bi bi-person-badge"></i> Gerenciar Recepcionistas</h2>
+        
+        <!-- Área para exibir mensagens -->
+        <?php if (!empty($msg)): ?>
+            <div class="alert <?= strpos($msg, 'Sucesso') !== false ? 'alert-success' : 'alert-danger' ?> alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($msg) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
 
-    <h3>Buscar Recepcionista</h3>
-    <form method="post">
-        <input type="text" name="search" placeholder="Digite o CPF ou Nome">
-        <button type="submit">Buscar</button>
-    </form>
-
-    <?php if (isset($result) && $result->num_rows > 0): ?>
-        <?php while ($row = $result->fetch_assoc()): ?>
-            <form method="post">
-                <input type="hidden" name="id_recep" value="<?= htmlspecialchars($row['id_recep']) ?>">
-
-                <label>Nome:</label>
-                <input type="text" name="nome" value="<?= htmlspecialchars($row['nome']) ?>" required>
-
-                <label>CPF:</label>
-                <input type="text" name="cpf" id="cpf" value="<?= htmlspecialchars($row['cpf']) ?>" required>
-
-                <label>E-mail:</label>
-                <input type="email" name="email" value="<?= htmlspecialchars($row['email']) ?>" required>
-
-                <label>RG:</label>
-                <input type="text" name="rg" value="<?= htmlspecialchars($row['rg']) ?>">
-
-                <label>Telefone:</label>
-                <input type="text" name="telefone" id="telefone" value="<?= htmlspecialchars($row['telefone']) ?>">
-
-                <label>Endereço:</label>
-                <input type="text" name="endereco" value="<?= htmlspecialchars($row['endereco']) ?>">
-
-                <button type="submit" name="update">Atualizar</button>
-                <button type="submit" name="delete">Excluir</button>
+        <div class="form-section">
+            <h3 class="mb-3"><i class="bi bi-search"></i> Buscar Recepcionista</h3>
+            <form method="post" class="row g-3">
+                <div class="col-md-9">
+                    <input type="text" name="search" class="form-control" placeholder="Digite o CPF ou Nome">
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search"></i> Buscar
+                    </button>
+                </div>
             </form>
-        <?php endwhile; ?>
-    <?php elseif (isset($result)): ?>
-        <p>Nenhum recepcionista encontrado.</p>
-    <?php endif; ?>
+        </div>
 
+        <?php if (isset($result) && $result->num_rows > 0): ?>
+            <?php while ($row = $result->fetch_assoc()): ?>
+                <div class="form-section">
+                    <h3 class="mb-3"><i class="bi bi-person-lines-fill"></i> Editar Recepcionista</h3>
+                    <form method="post" class="row g-3">
+                        <input type="hidden" name="id_recep" value="<?= htmlspecialchars($row['id_recep']) ?>">
+
+                        <div class="col-md-12">
+                            <label for="nome" class="form-label">Nome Completo</label>
+                            <input type="text" class="form-control" id="nome" name="nome" value="<?= htmlspecialchars($row['nome']) ?>" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="cpf" class="form-label">CPF</label>
+                            <input type="text" class="form-control" id="cpf" name="cpf" value="<?= htmlspecialchars($row['cpf']) ?>" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="rg" class="form-label">RG</label>
+                            <input type="text" class="form-control" id="rg" name="rg" value="<?= htmlspecialchars($row['rg']) ?>">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">E-mail</label>
+                            <input type="email" class="form-control" id="email" name="email" value="<?= htmlspecialchars($row['email']) ?>" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="telefone" class="form-label">Telefone</label>
+                            <input type="text" class="form-control" id="telefone" name="telefone" value="<?= htmlspecialchars($row['telefone']) ?>">
+                        </div>
+
+                        <div class="col-12">
+                            <label for="endereco" class="form-label">Endereço</label>
+                            <input type="text" class="form-control" id="endereco" name="endereco" value="<?= htmlspecialchars($row['endereco']) ?>">
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <button type="submit" name="update" class="btn btn-success btn-action">
+                                <i class="bi bi-check-circle"></i> Atualizar
+                            </button>
+                            <button type="submit" name="delete" class="btn btn-danger btn-action" onclick="return confirm('Tem certeza que deseja excluir este recepcionista?')">
+                                <i class="bi bi-trash"></i> Excluir
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            <?php endwhile; ?>
+        <?php elseif (isset($result)): ?>
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle"></i> Nenhum recepcionista encontrado.
+            </div>
+        <?php endif; ?>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
-        // Formatação do CPF (mantém 11 dígitos internamente)
+        // Formatação do CPF
         document.getElementById("cpf").addEventListener("input", function() {
             let cpf = this.value.replace(/\D/g, "");
             if (cpf.length > 11) cpf = cpf.slice(0, 11);
             
-            // Formata visualmente
             if (cpf.length > 9) {
                 this.value = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
             } else if (cpf.length > 6) {
@@ -129,7 +193,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             let tel = this.value.replace(/\D/g, "");
             if (tel.length > 11) tel = tel.slice(0, 11);
             
-            // Formata visualmente
             if (tel.length > 10) {
                 this.value = tel.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
             } else if (tel.length > 6) {
