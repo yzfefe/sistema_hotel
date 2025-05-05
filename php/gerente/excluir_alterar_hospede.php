@@ -61,7 +61,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Gerenciar Hóspedes</title>
     <!-- Link do Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <img src="../../img/logo_hoteel.png" alt="">
     <style>
+        img{
+            width: 20rem;
+            display: block;
+            margin: 0 auto;
+        }
         .msg-erro { color: red; }
         .msg-sucesso { color: green; }
     </style>
