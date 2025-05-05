@@ -64,7 +64,13 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <title>Serviços Disponíveis</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <img src="../../img/logo_hoteel.png" alt="">
     <style>
+        img{
+            width: 20rem;
+            display: block;
+            margin: 0 auto;
+        }
         body {
             max-width: 800px;
             margin: 20px auto;
