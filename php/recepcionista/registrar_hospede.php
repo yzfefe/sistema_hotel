@@ -4,7 +4,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 include "../conex.php";
-include "../../html/gerente/registrar_recep.html";
 
 date_default_timezone_set('America/Sao_Paulo');
 $msg = "";
@@ -27,13 +26,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $msg = "As senhas não coincidem!";
     } else {
         // Verificar se o usuário já existe (CPF ou login duplicado) em qualquer tabela
-        $tables = ['gerente', 'recepcionista', 'hospede'];
+        $tables = ['recepcionista', 'hospede'];
         $user_exists = false;
 
         foreach ($tables as $table) {
-            $sql_check = "SELECT login FROM $table WHERE login = ? OR cpf = ?";
+            $sql_check = "SELECT login FROM $table WHERE login = ? OR cpf = ? OR rg = ?";
             $stmt = $conn->prepare($sql_check);
-            $stmt->bind_param("ss", $login, $CPF);
+            $stmt->bind_param("sss", $login, $cpf, $rg);
             $stmt->execute();
             $result_check = $stmt->get_result();
 
@@ -41,9 +40,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $user_exists = true;
                 break;
             }
+        } 
+        $tables2 = ['gerente'];
+        $user_exists2 = false;
+
+        foreach ($tables2 as $table2){
+            $sql_check = "SELECT login FROM $table2 WHERE login = ? OR cpf = ?";
+            $stmt = $conn->prepare($sql_check);
+            $stmt->bind_param("ss", $login, $cpf);
+            $stmt->execute();
+            $result_check = $stmt->get_result();
+            if ($result_check->num_rows > 0) {
+                $user_exists2 = true;
+                break;
+            }
         }
 
-        if ($user_exists) {
+        if ($user_exists || $user_exists2) {
             $msg = "Usuário já existe!";
         }elseif (strlen($cpf)!== 14){
             $msg = "O CPF deve conter 11 dígitos";
@@ -61,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'ATIVO', 0.00, 0.00)";
 
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("sssssssss", $nome, $telefone, $endereco, $email, $CPF, $RG, $dataHoraAtual, $login, $hashed_password);
+            $stmt->bind_param("sssssssss", $nome, $telefone, $endereco, $email, $cpf, $rg, $dataHoraAtual, $login, $hashed_password);
 
             if ($stmt->execute()) {
                 $msg = "Registro bem sucedido!";
@@ -72,5 +85,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
+// Inclui o HTML depois de processar tudo
+include "../../html/recepcionista/registrar_hospede.html";
+
 $conn->close();
 ?>
+
+<?php if (!empty($msg)): ?>
+            <div class="mensagem <?php echo (strpos($msg, 'sucedido') !== false ? 'sucesso' : 'erro'); ?>">
+                <?php echo htmlspecialchars($msg); ?>
+            </div>
+        <?php endif; ?>
