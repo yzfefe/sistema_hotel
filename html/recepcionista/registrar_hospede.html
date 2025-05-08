@@ -5,75 +5,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caminho das Pedras - Rustic Hotel</title>
     <link rel="stylesheet" href="../../css/recepcionista/registrar_hospede.css">
-    
+    <style>
+        .mensagem {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .mensagem.erro {
+            background-color: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #c62828;
+        }
+        .mensagem.sucesso {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-left: 4px solid #2e7d32;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
         <img src="../../img/logo_hoteel.png" alt="Caminho das Pedras - Rustic Hotel">
-        
     </header>
     <div class="form-container">
+        
 
         <div class="grid">
-
             <div class="colun">
                 <form action="../../php/recepcionista/registrar_hospede.php" method="post">
-                
                     <label for="nome">Nome:</label>
-                    <input type="text" id="nome" name="nome" placeholder="Digite seu nome">
+                    <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
 
                     <label for="rg">RG:</label>
-                    <input type="text" id="rg" name="rg" placeholder="Digite seu RG"  onkeypress="RG()" maxlength= 12>
+                    <input type="text" id="rg" name="rg" placeholder="Digite seu RG" onkeypress="RG()" maxlength="12" required>
 
                     <label for="endereco">Endereço:</label>
-                    <input type="text" id="endereco" name="endereco" placeholder="Digite seu Endereço">
+                    <input type="text" id="endereco" name="endereco" placeholder="Digite seu Endereço" required>
 
                     <label for="login">Login:</label>
-                    <input type="text" id="login" name="login" placeholder="Digite seu Login">
-
+                    <input type="text" id="login" name="login" placeholder="Digite seu Login" required>
             </div>
 
             <div class="colun">
-
                 <label for="email">E-mail:</label>
-                <input type="text" id="email" name="email" placeholder="Digite seu E-mail" onkeypress="email()">
+                <input type="email" id="email" name="email" placeholder="Digite seu E-mail" onkeypress="email()" required>
 
                 <label for="cpf">CPF:</label>
-                <input type="text" id="cpf" name="cpf" placeholder="Digite seu CPF" onkeypress="cpf()" maxlength="14">
+                <input type="text" id="cpf" name="cpf" placeholder="Digite seu CPF" onkeypress="cpf()" maxlength="14" required>
 
                 <label for="telefone">Telefone:</label>
-                <input type="text" id="telefone" name="telefone" placeholder="Digite seu Telefone"  onkeypress="telefone()" maxlength=15>
+                <input type="text" id="telefone" name="telefone" placeholder="Digite seu Telefone" onkeypress="telefone()" maxlength="15" required>
 
                 <label for="senha">Senha:</label>
-            <div class="password-container">
-                <input type="password" id="password" name="senha" placeholder="Informe a Senha">
-                <button type="button" class="toggle-password2" onclick="ver_senha('senha')">👁️</button>
+                <div class="password-container">
+                    <input type="password" id="password" name="senha" placeholder="Informe a Senha" required>
+                    <button type="button" class="toggle-password2" onclick="ver_senha('senha')">👁️</button>
+                </div>
             </div>
-
-            </div>
-
         </div>
 
         <label for="confirmar_senha">Confirme a senha:</label>
-            <div class="password-container">
-                <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Confirme a Senha">
-                <button type="button" class="toggle-password" onclick="ver_senha2('confirmar_senha')">👁️</button>
-            </div>
-        
+        <div class="password-container">
+            <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Confirme a Senha" required>
+            <button type="button" class="toggle-password" onclick="ver_senha2('confirmar_senha')">👁️</button>
         </div>
         
         <button type="submit" class="btn-enviar">Cadastrar</button>
-    </form>
-    
-    <button class="btn-voltar" onclick="red()">Voltar</button>
+        </form>
+        
+        <button class="btn-voltar" onclick="red()">Voltar</button>
+    </div>
 
-</body>
     <script>
         document.querySelector("#cpf").addEventListener("input", function() {
-            let cpf = this.value.replace(/\D/g, ""); // Remove tudo que não for número
-            if (cpf.length > 11) cpf = cpf.slice(0, 11); // Limita a 11 caracteres numéricos
+            let cpf = this.value.replace(/\D/g, "");
+            if (cpf.length > 11) cpf = cpf.slice(0, 11);
     
-            // Formata como XXX.XXX.XXX-XX
             if (cpf.length > 9) {
                 cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
             } else if (cpf.length > 6) {
@@ -86,11 +99,10 @@
         });
 
         document.querySelector("#telefone").addEventListener("input", function () {
-            let tel = this.value.replace(/\D/g, ""); // Remove tudo que não for número
+            let tel = this.value.replace(/\D/g, "");
 
-            if (tel.length > 11) tel = tel.slice(0, 11); // Limita a 11 caracteres numéricos
+            if (tel.length > 11) tel = tel.slice(0, 11);
 
-            // Formata como (XX) XXXXX-XXXX ou (XX) XXXX-XXXX
             if (tel.length > 10) {
                 tel = tel.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
             } else if (tel.length > 6) {
@@ -110,27 +122,15 @@
         
         function ver_senha(){
             var passwordField = document.getElementById("password");
-                if (passwordField.type === "password") {
-                    passwordField.type = "text";
-                } else {
-                    passwordField.type = "password";
-                }
-            }
-
-        document.querySelector("#email").addEventListener("input", function () {
-            this.value = this.value.toLowerCase();
-        });
-
-        function ver_senha2(){
-        var passwordField = document.getElementById("confirmar_senha");
             if (passwordField.type === "password") {
                 passwordField.type = "text";
             } else {
                 passwordField.type = "password";
             }
         }
-        function ver_senha(){
-        var passwordField = document.getElementById("password");
+
+        function ver_senha2(){
+            var passwordField = document.getElementById("confirmar_senha");
             if (passwordField.type === "password") {
                 passwordField.type = "text";
             } else {
@@ -141,6 +141,6 @@
         function red(){
             window.location.href = "http://localhost/sistema_hotel-main/html/recepcionista/tela_recep.html"
         }
-
-</script>
+    </script>
+</body>
 </html>
