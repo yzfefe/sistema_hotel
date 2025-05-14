@@ -124,14 +124,6 @@ CREATE TABLE relatorios (
     data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE consumo (
-    id_consumo INT PRIMARY KEY AUTO_INCREMENT,
-    id_hos INT,
-    id_servico INT,
-    data DATE NOT NULL,
-    valor DECIMAL(10,2) NOT NULL
-);
-
 CREATE TABLE saloes (
     id_salao INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
@@ -148,8 +140,14 @@ INSERT INTO saloes (nome, capacidade, preco, descricao, tamanho_m2, disponibilid
 ('Espaço Celebration', 80, 950.00, 'Ideal para festas de aniversário e eventos corporativos.', 180, 'Disponível'),
 ('Salão Top Festas', 120, 1500.00, 'Espaço amplo com palco, som e área kids.', 250, 'Disponível');
 
+CREATE TABLE decoracoes (
+    id_decoracao INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    descricao VARCHAR(255),
+    preco DECIMAL(10,2) NOT NULL
+);
 CREATE TABLE reservas_salao (
-    id_reserva INT PRIMARY KEY AUTO_INCREMENT,
+    id_reserva INT NOT NULL,
     id_hos INT NOT NULL,
     id_salao INT NOT NULL,
     id_decoracao INT NULL,
@@ -160,16 +158,12 @@ CREATE TABLE reservas_salao (
     status ENUM('Pendente', 'Confirmada', 'Cancelada') DEFAULT 'Pendente',
     FOREIGN KEY (id_hos) REFERENCES hospede(id_hos),
     FOREIGN KEY (id_salao) REFERENCES saloes(id_salao),
-    FOREIGN KEY (id_decoracao) REFERENCES decoracoes(id_decoracao)
+    FOREIGN KEY (id_decoracao) REFERENCES decoracoes(id_decoracao),
+    FOREIGN KEY (id_reserva) REFERENCES reservas(id_reserva)
 );
 select * from reservas_salao;
 
-CREATE TABLE decoracoes (
-    id_decoracao INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100) NOT NULL,
-    descricao VARCHAR(255),
-    preco DECIMAL(10,2) NOT NULL
-);
+
 select * from decoracoes;
 
 INSERT INTO decoracoes (nome, descricao, preco) VALUES
