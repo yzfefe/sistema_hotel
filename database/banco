@@ -1,0 +1,169 @@
+create database sistema_hotel;
+use sistema_hotel;
+
+CREATE TABLE hospede(
+    id_hos int primary key auto_increment,
+    nome varchar(150),
+    email varchar(200),
+    cpf char(14),
+    rg varchar(12),
+    endereco varchar(250),
+    telefone char(15),
+    horario time,
+    status_atual varchar(100),
+    login varchar(50),
+    senha varchar(100),
+    gastos_totais DECIMAL(10,2),
+    gastos_atuais DECIMAL(10,2)  -- Alterado para DECIMAL
+);
+select * from hospede;
+
+create table recepcionista (
+	id_recep int primary key auto_increment,
+    nome varchar(150),
+    email varchar(200),
+    cpf char (14),
+    rg varchar(12),
+    endereco varchar(250),
+    telefone char(15),
+    horario time,
+    login varchar(50),
+    senha varchar (100)
+);
+select * from recepcionista;
+
+create table servicos (
+	id_serv int primary key auto_increment,
+    nome varchar(200),
+    preco float,
+    horario_comeca time,
+    horario_termina time,
+    disponivel boolean default true
+);
+select * from servicos;
+
+CREATE TABLE solicitacoes_servico (
+    id_solicitacao INT AUTO_INCREMENT PRIMARY KEY,
+    id_hos INT,
+    id_promocao INT,
+    data_solicitacao DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+select * from solicitacoes_servico;
+
+create table gerente (
+	id_ger int primary key auto_increment,
+    nome varchar(150),
+    email varchar(200),
+    cpf char (14),
+    endereco varchar(250),
+    telefone char(15),
+    login varchar(50),
+    senha varchar (100)
+);
+select * from gerente;
+
+create table administrador(
+	id_adm int primary key auto_increment,
+    login varchar(50),
+    senha varchar (100)
+);
+select * from administrador;
+
+INSERT INTO administrador (login, senha)VALUES ('adm_hotel','adm_hotel001');
+
+CREATE TABLE quartos (
+    id_quarto INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    num_quarto INT NOT NULL,
+    tipo VARCHAR(50) NOT NULL,
+    preco_diaria DECIMAL(10,2) NOT NULL,
+    andar INT NOT NULL,
+    disponivel boolean default true
+);
+select * from quartos;
+
+CREATE TABLE reservas (
+    id_reserva INT PRIMARY KEY AUTO_INCREMENT,
+    id_hos INT,
+    id_quarto INT,
+    data_reserva DATE NOT NULL,
+    data_encerrada DATE,
+    status_atual varchar (12),
+    FOREIGN KEY (id_hos) references hospede (id_hos),
+    FOREIGN KEY (id_quarto) references quartos (id_quarto)
+);
+select * from reservas;
+
+
+CREATE TABLE promocoes_servicos (
+    id_promocao INT PRIMARY KEY AUTO_INCREMENT,
+    nome varchar(100),
+    horario_comeca time,
+    horario_termina time,
+    disponivel boolean default true,
+    preco_promocional DECIMAL(10,2) NOT NULL
+);
+select * from promocoes_servicos;
+
+CREATE TABLE promocoes_quartos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_quarto INT NOT NULL,
+    preco_promocional DECIMAL(10,2) NOT NULL,
+    data_inicio DATE NOT NULL,
+    data_fim DATE NOT NULL,
+    data_criacao DATETIME NOT NULL,
+    data_atualizacao DATETIME,
+    disponivel BOOLEAN,
+    FOREIGN KEY (id_quarto) REFERENCES quartos(id_quarto)
+);
+select * from promocoes_quartos;
+
+CREATE TABLE relatorios (
+    id_relatorio INT PRIMARY KEY AUTO_INCREMENT,
+    tipo VARCHAR(100) NOT NULL,
+    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE consumo (
+    id_consumo INT PRIMARY KEY AUTO_INCREMENT,
+    id_hos INT,
+    id_servico INT,
+    data DATE NOT NULL,
+    valor DECIMAL(10,2) NOT NULL
+);
+
+CREATE TABLE saloes (
+    id_salao INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    capacidade INT NOT NULL,
+    preco DECIMAL(10,2) NOT NULL,
+    descricao text,
+    tamanho_m2 INT,
+    disponibilidade ENUM('Disponível', 'Indisponível') NOT NULL /*podem conter dois valores*/
+);
+select * from saloes;
+
+CREATE TABLE reservas_salao (
+    id_reserva INT PRIMARY KEY AUTO_INCREMENT,
+    id_hos INT NOT NULL,
+    id_salao INT NOT NULL,
+    id_decoracao INT NULL,
+    data_inicio DATE NOT NULL,
+    data_fim DATE NOT NULL,
+    valor_total DECIMAL(10,2) NOT NULL,
+    data_reserva TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('Pendente', 'Confirmada', 'Cancelada') DEFAULT 'Pendente',
+    FOREIGN KEY (id_hos) REFERENCES hospede(id_hos),
+    FOREIGN KEY (id_salao) REFERENCES saloes(id_salao),
+    FOREIGN KEY (id_decoracao) REFERENCES decoracoes(id_decoracao)
+);
+
+-- Adicione esta coluna à tabela saloes se ainda não existir
+ALTER TABLE saloes ADD COLUMN descricao TEXT;
+ALTER TABLE saloes ADD COLUMN tamanho_m2 INT;
+CREATE TABLE decoracoes (
+    id_decoracao INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    descricao VARCHAR(255),
+    preco DECIMAL(10,2) NOT NULL
+);
