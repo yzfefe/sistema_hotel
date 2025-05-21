@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caminho das Pedras - Rustic Hotel</title>
+    <script src="../js/Tela principal adm.js" defer></script>
+    <link rel="stylesheet" href="../../css/admin/tela_adm.css">
+</head>
+<body>
+        <img src="../../img/logo_hoteel.png" alt="Caminho das Pedras - Rustic Hotel">
+    
+        <button class="btn-cad" onclick="redirecionar()">CADASTRAR GERENTE</button>
+        <button class="btn-relat" onclick="red()">RELATÓRIOS</button>  
+        <button class="btn-sair" onclick="red2()">SAIR</button>
+
+        <script>
+            function redirecionar() {
+                window.location.href = "http://localhost/sistema_hotel-main/html/adm/registrar_gerente.html"
+            }
+
+            function red(){
+                window.location.href = "http://localhost/sistema_hotel-main/php/admin/relatorios_tela.php"
+            }
+            function red2(){
+                window.location.href = "http://localhost/sistema_hotel-main/html/login.html"
+            }
+        </script>
+</body>
+</html>
