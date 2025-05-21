@@ -9,7 +9,7 @@ SELECT
     AVG(DATEDIFF(data_encerrada, data_reserva)) AS media,
     MIN(DATEDIFF(data_encerrada, data_reserva)) AS minima,
     MAX(DATEDIFF(data_encerrada, data_reserva)) AS maxima
-FROM reservas
+FROM reservas_quarto
 WHERE data_encerrada IS NOT NULL
 ";
 $d = $pdo->query($sql)->fetch(PDO::FETCH_ASSOC);

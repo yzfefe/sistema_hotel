@@ -6,7 +6,7 @@ $pdo = new PDO("mysql:host=localhost;dbname=sistema_hotel", "root", "");
 
 $sql = "
 SELECT q.num_quarto, q.tipo, COUNT(r.id_reserva) AS total_ocupacoes
-FROM reservas r
+FROM reservas_quarto r
 JOIN quartos q ON r.id_quarto = q.id_quarto
 GROUP BY q.id_quarto
 ORDER BY total_ocupacoes DESC

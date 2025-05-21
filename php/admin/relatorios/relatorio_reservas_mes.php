@@ -6,7 +6,7 @@ $pdo = new PDO("mysql:host=localhost;dbname=sistema_hotel", "root", "");
 
 $dados = $pdo->query("
     SELECT MONTHNAME(data_reserva) AS mes, COUNT(*) AS total
-    FROM reservas
+    FROM reservas_quarto
     GROUP BY MONTH(data_reserva), MONTHNAME(data_reserva)
     ORDER BY MONTH(data_reserva)
 ")->fetchAll(PDO::FETCH_ASSOC);
