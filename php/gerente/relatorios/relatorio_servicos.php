@@ -118,14 +118,9 @@ $html = '
                 <td class="destaque">Total de Solicitações</td>
                 <td>' . $menos['total'] . '</td>
             </tr>
-        </table>
-        
-        <h2>Detalhamento de Todos os Serviços</h2>
+        </table>    
         <table>
-            <tr>
-                <th>Serviço</th>
-                <th>Total de Solicitações</th>
-            </tr>';
+            ';
 
 // Adiciona todos os serviços à tabela
 foreach ($dados as $servico) {
@@ -136,7 +131,6 @@ foreach ($dados as $servico) {
             </tr>';
 }
 $html .= '
-        </table>
         
         <div class="footer">
             Relatório gerado em: ' . date('d/m/Y H:i:s') . '
