@@ -6,7 +6,7 @@ $pdo = new PDO("mysql:host=localhost;dbname=sistema_hotel", "root", "");
 
 $sql = "
 SELECT h.nome, MIN(r.data_reserva) AS primeira_estadia, COUNT(r.id_reserva) AS total_estadas
-FROM reservas r
+FROM reservas_quarto r
 JOIN hospede h ON r.id_hos = h.id_hos
 GROUP BY h.id_hos
 ORDER BY primeira_estadia ASC

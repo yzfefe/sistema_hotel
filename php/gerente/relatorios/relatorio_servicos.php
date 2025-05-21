@@ -28,7 +28,6 @@ if (count($dados) > 0) {
     $mais = ['nome' => 'Nenhum serviço registrado', 'total' => 0];
     $menos = $mais;
 }
-
 // Criação do HTML para o PDF com o novo esquema de cores
 $html = '
 <!DOCTYPE html>
@@ -95,6 +94,7 @@ $html = '
     </style>
 </head>
 <body>
+    <img src="../../../img/img/logo_hoteel.png" alt="Caminho das Pedras - Rustic Hotel">
     <div class="container">
         <h1>Relatório de Serviços Mais Utilizados</h1>
         
@@ -135,7 +135,6 @@ foreach ($dados as $servico) {
                 <td>' . $servico['total'] . '</td>
             </tr>';
 }
-
 $html .= '
         </table>
         
