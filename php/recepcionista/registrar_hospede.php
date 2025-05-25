@@ -3,6 +3,11 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'recepcionista') {
+    header("Location: ../../html/login.html");
+    exit();
+}
+
 include "../conex.php";
 include "../../html/recepcionista/registrar_hospede.html";
 

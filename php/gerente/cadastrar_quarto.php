@@ -1,5 +1,10 @@
 <?php
+session_start();
 
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'gerente') {
+    header("Location: ../../html/login.html");
+    exit();
+}
 include "../conex.php";
 include "../../html/gerente/cadastrar_quartos.html";
 $msg = "";

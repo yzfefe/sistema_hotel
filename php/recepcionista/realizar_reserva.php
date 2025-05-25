@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+    if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'recepcionista') {
+        header("Location: ../../html/login.html");
+        exit();
+    }
 include '../conex.php';
 date_default_timezone_set('America/Sao_Paulo');
 

@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'administrador') {
+    header("Location: ../../html/login.html");
+    exit();
+}
 include "../conex.php";
 include "../../html/adm/registrar_gerente.html";
 $msg = "";
