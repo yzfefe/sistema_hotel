@@ -2,13 +2,13 @@
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login.php");
+    header("Location: ../login.html");
     exit();
 }
-
+ 
 // Verifica se é realmente um gerente
 if ($_SESSION['role'] !== 'gerente') {
-    header("Location: ../login.php");
+    header("Location: ../login.html");
     exit();
 }
 ?>

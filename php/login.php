@@ -58,8 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<!-- HTML só aparece se não houve redirecionamento -->
-<?php include "../html/login.html"; ?>
+
 
 <?php if ($erro): ?>
     <div style='color: red; text-align: center; font-weight: bold;'><?= $erro ?></div>

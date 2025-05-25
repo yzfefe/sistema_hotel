@@ -3,7 +3,7 @@
     include "../../php/conex.php";
 
     if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'hospede') {
-        header("Location: ../login.php");
+        header("Location: ../login.html");
         exit();
     }
 
