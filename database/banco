@@ -1,0 +1,173 @@
+create database sistema_hotel;
+use sistema_hotel;
+
+CREATE TABLE hospede(
+    id_hos int primary key auto_increment,
+    nome varchar(150),
+    email varchar(200),
+    cpf char(14),
+    rg varchar(12),
+    endereco varchar(250),
+    telefone char(15),
+    horario time,
+    status_atual varchar(100),
+    login varchar(50),
+    senha varchar(100),
+    gastos_totais DECIMAL(10,2),
+    gastos_atuais DECIMAL(10,2)  -- Alterado para DECIMAL
+);
+select * from hospede;
+
+create table recepcionista (
+	id_recep int primary key auto_increment,
+    nome varchar(150),
+    email varchar(200),
+    cpf char (14),
+    rg varchar(12),
+    endereco varchar(250),
+    telefone char(15),
+    horario time,
+    login varchar(50),
+    senha varchar (100)
+);
+select * from recepcionista;
+
+create table servicos (
+	id_serv int primary key auto_increment,
+    nome varchar(200),
+    preco float,
+    horario_comeca time,
+    horario_termina time,
+    disponivel boolean default true
+);
+select * from servicos;
+
+CREATE TABLE solicitacoes_servico (
+    id_solicitacao INT AUTO_INCREMENT PRIMARY KEY,
+    id_hos INT,
+    id_serv INT,
+    data_solicitacao DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+select * from solicitacoes_servico;
+
+CREATE TABLE solicitacoes_servico_promo (
+    id_solicitacao INT AUTO_INCREMENT PRIMARY KEY,
+    id_hos INT,
+    id_promocao INT,
+    data_solicitacao DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+select * from solicitacoes_servico_promo;
+
+create table gerente (
+	id_ger int primary key auto_increment,
+    nome varchar(150),
+    email varchar(200),
+    cpf char (14),
+    endereco varchar(250),
+    telefone char(15),
+    login varchar(50),
+    senha varchar (100)
+);
+select * from gerente;
+
+create table administrador(
+	id_adm int primary key auto_increment,
+    login varchar(50),
+    senha varchar (100),
+    nome varchar (100)
+);
+select * from administrador;
+
+CREATE TABLE quartos (
+    id_quarto INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    num_quarto INT NOT NULL,
+    tipo VARCHAR(50) NOT NULL,
+    preco_diaria DECIMAL(10,2) NOT NULL,
+    andar INT NOT NULL,
+    disponivel boolean default true
+);
+select * from quartos;
+
+CREATE TABLE reservas_quarto (
+    id_reserva INT PRIMARY KEY AUTO_INCREMENT,
+    id_hos INT NOT NULL,
+    id_quarto INT NOT NULL,
+    data_reserva DATE NOT NULL,
+    data_encerrada DATE,
+    status ENUM('Pendente', 'CONFIRMADA', 'Cancelada', 'ENCERRADA') DEFAULT 'Pendente',
+    FOREIGN KEY (id_hos) REFERENCES hospede(id_hos),
+    FOREIGN KEY (id_quarto) REFERENCES quartos(id_quarto)
+);
+select * from reservas_quarto;
+
+
+CREATE TABLE promocoes_servicos (
+    id_promocao INT PRIMARY KEY AUTO_INCREMENT,
+    nome varchar(100),
+    horario_comeca time,
+    horario_termina time,
+    disponivel boolean default true,
+    preco_promocional DECIMAL(10,2) NOT NULL
+);
+select * from promocoes_servicos;
+
+CREATE TABLE promocoes_quartos (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_quarto INT NOT NULL,
+    preco_promocional DECIMAL(10,2) NOT NULL,
+    data_inicio DATE NOT NULL,
+    data_fim DATE NOT NULL,
+    data_criacao DATETIME NOT NULL,
+    data_atualizacao DATETIME,
+    disponivel BOOLEAN,
+    FOREIGN KEY (id_quarto) REFERENCES quartos(id_quarto)
+);
+select * from promocoes_quartos;
+
+CREATE TABLE saloes (
+    id_salao INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    capacidade INT NOT NULL,
+    preco DECIMAL(10,2) NOT NULL,
+    descricao text,
+    tamanho_m2 INT,
+    disponibilidade ENUM('Disponível', 'Indisponível') NOT NULL /*podem conter dois valores*/
+);
+select * from saloes;
+
+INSERT INTO saloes (nome, capacidade, preco, descricao, tamanho_m2, disponibilidade) VALUES
+('Salão Luxo Primavera', 100, 1200.00, 'Salão elegante com iluminação natural e jardim externo.', 200, 'Disponível'),
+('Espaço Celebration', 80, 950.00, 'Ideal para festas de aniversário e eventos corporativos.', 180, 'Disponível'),
+('Salão Top Festas', 120, 1500.00, 'Espaço amplo com palco, som e área kids.', 250, 'Disponível');
+
+CREATE TABLE decoracoes (
+    id_decoracao INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    descricao VARCHAR(255),
+    preco DECIMAL(10,2) NOT NULL
+);
+CREATE TABLE reservas_salao (
+    id_reserva INT PRIMARY KEY AUTO_INCREMENT,
+    id_hos INT NOT NULL,
+    id_salao INT NOT NULL,
+    id_decoracao INT NULL,
+    data_inicio DATE NOT NULL,
+    data_fim DATE,
+    valor_total DECIMAL(10,2),
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('Pendente','Cancelada', 'Concluída') DEFAULT 'Pendente',
+    FOREIGN KEY (id_hos) REFERENCES hospede(id_hos) ON DELETE CASCADE,
+    FOREIGN KEY (id_salao) REFERENCES saloes(id_salao) ON DELETE RESTRICT,
+    FOREIGN KEY (id_decoracao) REFERENCES decoracoes(id_decoracao) ON DELETE SET NULL,
+    CONSTRAINT chk_datas CHECK (data_fim >= data_inicio)
+);
+select * from reservas_salao;
+
+
+select * from decoracoes;
+
+INSERT INTO decoracoes (nome, descricao, preco) VALUES
+('Clássico Elegante', 'Decoração com tons neutros, arranjos florais e iluminação suave.', 500.00),
+('Festa Tropical', 'Temática colorida com elementos de praia, frutas e folhagens.', 450.00),
+('Noite Glamour', 'Ambiente sofisticado com preto, dourado e luzes cintilantes.', 600.00);
