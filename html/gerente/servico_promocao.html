@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caminho das Pedras - Rustic Hotel</title>
+    <link rel="stylesheet" href="../../css/gerente/servico_promocao.css">
+    <link rel="shortcut icon" type="imagex/png" href="../../img/aba.png">
+</head>
+<body>
+    <header class="header">
+        <img src="../../img/logo_hoteel.png" alt="Caminho das Pedras - Rustic Hotel">
+    </header>
+    
+    <div class="form-container">
+        <form method="post" action="../../php/gerente/cadastrar_servicos_promocoes.php">
+            <label for="search">Serviço</label>
+            <input type="text" name="search" id="search" placeholder="Digite o ID ou Nome do serviço">
+            <button type="submit" class="btn-enviar">Consultar</button>
+        </form>
+        <button class="btn-voltar" onclick="red()">Voltar</button>
+    </div>
+
+    
+
+    <script>
+        function red(){
+            window.location.href = "http://localhost/sistema_hotel-main/html/gerente/tela_gerente.html"
+        }
+    </script>
+</body>
+</html>

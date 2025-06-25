@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Quartos - Caminho das Pedras</title>
+    <link rel="stylesheet" href="../../css/gerente/cadastrar_quarto.css">
+    <link rel="shortcut icon" type="imagex/png" href="../../img/aba.png">
+</head>
+<body>
+    <header class="header">
+        <img src="../../img/logo_hoteel.png" alt="Caminho das Pedras - Rustic Hotel"> 
+    </header>
+    
+    <div class="form-container">
+       
+ 
+        <form method="POST" action="../../php/gerente/cadastrar_quarto.php">
+            <label for="nome">Nome do Quarto:</label>
+            <input type="text" id="nome" name="nome" placeholder="Informe o nome do quarto" required>
+
+            <label for="nome">Nº do Quarto:</label>
+            <input type="number" id="num_quarto" name="num_quarto" placeholder="Informe o nº do quarto" required>
+            
+            <label for="andar">Andar:</label>
+            <input type="number" id="andar" name="andar" placeholder="Informe o andar do quarto" required>
+            
+            <label for="tipo">Tipo:</label>
+            <input type="text" id="tipo" name="tipo" placeholder="Ex:(suíte normal ou suíte plus)" required>
+
+            <label for="preco">Preço:</label>
+            <input type="number" step="0.01" id="preco" name="preco" placeholder="Informe o preço" required>
+
+            <button type="submit" class="btn-enviar">Enviar</button>
+            <button class="btn-voltar" onclick="red()">Voltar</button>
+        </form>
+    </div>
+    
+
+    <script>
+        function red(){
+            window.location.href ="http://localhost/sistema_hotel-main/html/gerente/tela_gerente.php"
+        }
+    </script>
+</body>
+</html>
